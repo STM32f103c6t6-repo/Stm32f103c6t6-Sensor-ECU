@@ -1,55 +1,10 @@
-# Prerequisites
-*.d
+# 1) Ignore ALL at root
+/*
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+# 2) But still keep track of some configuration files at root (up to you)
+!.gitignore
+!README.md
 
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
-
-# debug information files
-*.dwo
+# 3) Whitelist the correct folder you want to push
+!Config/
+!Config/**
