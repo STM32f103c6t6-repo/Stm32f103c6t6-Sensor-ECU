@@ -8,3 +8,5 @@
 # 3) Whitelist the correct folder you want to push
 !Config/
 !Config/**
+!MCAL/
+!MCAL/**
