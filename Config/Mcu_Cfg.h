@@ -115,7 +115,7 @@ typedef enum
 
 // Parameter for config
 
-struct Mcu_ClockInfoType
+typedef struct
 {
 	uint32_t sysclk_hz;
 	uint32_t hclk_hz;
@@ -123,7 +123,7 @@ struct Mcu_ClockInfoType
 	uint32_t pclk2_hz;
 	uint32_t adcclk_hz;
 	uint32_t systick_hz;
-};
+}Mcu_ClockInfoType;
 
 #ifdef __cplusplus
 }

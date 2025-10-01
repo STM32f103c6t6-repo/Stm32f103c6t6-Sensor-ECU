@@ -50,15 +50,6 @@ extern "C" {
 #define MCU_E_PARAM_CONFIG				(0x04u)	// Config is error
 
 /* =========================================================
- *  Status
- * =======================================================*/
-typedef enum
-{
-	MCU_UNINIT	 = 0u,
-	MCU_INIT
-}Mcu_StatusType;
-
-/* =========================================================
  *  From Mcu_Cfg.h:
  *  - Mcu_ClockProfileType:	choose profile clock.
  *  - Mcu_ClockInfoType: information frequency for print log.

@@ -111,8 +111,15 @@ typedef struct
 #define RCC_APB1ENR_CAN1EN			(1UL << 25)
 
 /* ---- FLASH ACR ---- */
+#define FLASH_ACR					(*(__vo uint32_t*)(0x40022000UL))
 #define FLASH_ACR_LATENCY_Pos		0U
-#define FLASH_ACR_PRFTBE			(1UL << 4)
+#define FLASH_ACR_PRFTBE_Pos		4U
+
+/* IWDG registers */
+#define IWDG_KR						(*(__vo uint32_t*)(0x40003000UL))
+#define IWDG_PR						(*(__vo uint32_t*)(0x40003004UL))
+#define IWDG_RLR					(*(__vo uint32_t*)(0x40003008UL))
+#define IWDG_SR						(*(__vo uint32_t*)(0x4000300CUL))
 
 /* ---- AFIO MAPR helpers ---- */
 /* CAN_REMAP[14:13]: 10b → CAN RX=PB8, TX=PB9 */

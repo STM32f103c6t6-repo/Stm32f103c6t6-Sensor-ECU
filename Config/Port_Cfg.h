@@ -97,8 +97,8 @@ typedef struct
 #define PORT_PIN_CAN1_TX		PORTA_PIN(12)
 #define PORT_PIN_CAN1_RX		PORTA_PIN(11)
 
-#define PORT_PIN_HCSR04_TRG		PORTA_PIN(1)
-#define PORT_PIN_HCSR04_TRG		PORTA_PIN(0)
+#define PORT_PIN_HCSR04_TRIG		PORTA_PIN(1)
+#define PORT_PIN_HCSR04_ECHO		PORTA_PIN(0)
 
 /* =====================================================================================================================
  *  List connfig Pin
