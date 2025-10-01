@@ -23,12 +23,7 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include "Mcu_Cfg.h"
-
-#ifndef E_OK
-typedef uint8_t Std_ReturnType;
-#define E_OK		((Std_ReturnType)0x00u)
-#define E_NOT_OK	((Std_ReturnType)0x01u)
-#endif
+#include "Mcu_Types.h"
 
 /* =========================================================
  *  Service ID (for DET/Logger when trace error)
@@ -55,20 +50,13 @@ typedef uint8_t Std_ReturnType;
 #define MCU_E_PARAM_CONFIG				(0x04u)	// Config is error
 
 /* =========================================================
- *  Status & Data Types
+ *  Status
  * =======================================================*/
 typedef enum
 {
 	MCU_UNINIT	 = 0u,
 	MCU_INIT
 }Mcu_StatusType;
-
-typedef enum
-{
-	MCU_PLL_UNLOCKED	= 0u,
-	MCU_PLL_LOCKED,
-	MCU_PLL_STATUS_UNDEFINED
-}Mcu_PllStatusType;
 
 /* =========================================================
  *  From Mcu_Cfg.h:
