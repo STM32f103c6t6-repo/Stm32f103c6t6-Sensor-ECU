@@ -219,7 +219,7 @@ void Mcu_DelayMs(uint32_t ms)
 	while ((s_systickTicks - start) < ms){}
 }
 
-Std_ReturnType Mcu_GetlockInfo(Mcu_ClockInfoType* out)
+Std_ReturnType Mcu_GetClockInfo(Mcu_ClockInfoType* out)
 {
 	if(out == NULL){ return E_NOT_OK; }
 	*out = s_clkInfo;
@@ -293,7 +293,7 @@ Mcu_StatusType Mcu_GetStatus(void)
 }
 
 /*weak hooks */
-__attribute__((weak)) void Mcu_PllLockedHook(void) {}
+__attribute__((weak)) void MCu_PllLockedHook(void) {}
 __attribute__((weak)) void Mcu_ClockInitErrorHook(void) {}
 
 /* Local helpers impl */

@@ -70,7 +70,7 @@ Std_ReturnType Mcu_Init(Mcu_ClockProfileType profile);
 /**
  * @brief  init Clock fllow profile
  */
-Std_ReturnType Mcu_initClock(Mcu_ClockProfileType profile);
+Std_ReturnType Mcu_InitClock(Mcu_ClockProfileType profile);
 
 /**
  * @brief  get state of PLL
@@ -122,7 +122,7 @@ Std_ReturnType Mcu_GetClockInfo(Mcu_ClockProfileType* out);
 /**
  * @brief  Watchdog (IWDG reload)
  */
-void Mcu_KcikIwdg(void);
+void Mcu_KickIwdg(void);
 
 /**
  * @brief  system reset (NVIC_SystemReset)
