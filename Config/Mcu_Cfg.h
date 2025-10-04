@@ -72,7 +72,7 @@ extern "C" {
 #define MCU_PRIO_CAN_TX_PREEMPT			(2u)
 #define MCU_PRIO_CAN_TX_SUB				(0u)
 #define MCU_PRIO_CAN_RX0_PREEMPT		(2u)
-#define MCU_PRIO_CAN_RX0_PREEMPT		(1u)
+#define MCU_PRIO_CAN_RX0_SUB			(1u)
 
 #define	MCU_PRIO_USART1_PREEMPT			(3u)
 #define	MCU_PRIO_USART1_SUB				(0u)

@@ -208,7 +208,7 @@ Std_ReturnType Mcu_SetSysTickHz(uint32_t tick_hz)
 }
 
 /* Tick increase each 1ms ( if set 1000Hz) - Port enter startip: put pointer vector SysTick_Handler to this function*/
-Std_ReturnType SysTick_Handler(void)
+void SysTick_Handler(void)
 {
 	s_systickTicks++;
 }
