@@ -22,13 +22,31 @@ extern "C" {
 #include<stdint.h>
 #include<stdbool.h>
 
-#include"Mcu_Cfg.h"
-
 #ifndef E_OK
 typedef uint8_t Std_ReturnType;
 #define E_OK		((Std_ReturnType)0x00u)
 #define E_NOT_OK	((Std_ReturnType)0x01u)
 #endif
+
+/* =====================================================================================================================
+ * API choose the config
+ * ===================================================================================================================*/
+typedef enum
+{
+	MCU_CLOCK_PROFILE_DEFAULT =0u
+} Mcu_ClockProfileType;
+
+// Parameter for config
+
+typedef struct
+{
+	uint32_t sysclk_hz;
+	uint32_t hclk_hz;
+	uint32_t pclk1_hz;
+	uint32_t pclk2_hz;
+	uint32_t adcclk_hz;
+	uint32_t systick_hz;
+}Mcu_ClockInfoType;
 
 /* =====================================================================================================================
  * Clock & choose PLL

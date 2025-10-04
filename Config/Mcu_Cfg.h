@@ -88,6 +88,30 @@ extern "C" {
 #define MCU_CFG_IWDG_PRESC				(64u)	// Prescaler: 4...256
 #define MCU_CFG_IWDFG_TIMEOUT			(1000u)	// Timeout (ms)
 
+/* =========================================================
+ *  Service ID (for DET/Logger when trace error)
+ * =======================================================*/
+#define MCU_SID_INIT					(0x00u)
+#define MCU_SID_INITCLOCK				(0x01u)
+#define MCU_SID_DISTRIBUTE_PLLCLOCK		(0x02u)
+#define MCU_SID_GET_PLLSTATUS			(0x03u)
+#define MCU_SID_GET_CLOCKINFO			(0x04u)
+#define MCU_SID_SETSYSTICKHZ			(0x05u)
+#define MCU_SID_DELAYMS					(0x06u)
+#define MCU_SID_PERFORMRESET			(0x07u)
+#define MCU_SID_SETNVICGROUPING			(0x08u)
+#define MCU_SID_SETIRQPRIORITY			(0x09u)
+#define MCU_SID_ENABLEIWDG				(0x0Au)
+#define MCU_SID_KICKIWDG				(0x0Bu)
+
+/* =========================================================
+ *  DET error
+ * =======================================================*/
+#define MCU_E_UNINIT					(0x01u)	// Call API when Mcu is not Init
+#define MCU_E_PARAM_POINTER				(0x01u) // Null pointer
+#define MCU_E_TIMEOUT					(0x03u) // timeout
+#define MCU_E_PARAM_CONFIG				(0x04u)	// Config is error
+
 /* =====================================================================================================================
  * Check config compile-time
  * ===================================================================================================================*/
@@ -104,26 +128,6 @@ extern "C" {
 #if (MCU_CFG_ADC_FREQ_HZ > 14000000u)
 #error "ADC clock > 14MHz - exceeds datasheet recommendations!"
 #endif
-
-/* =====================================================================================================================
- * API choose the config
- * ===================================================================================================================*/
-typedef enum
-{
-	MCU_CLOCK_PROFILE_DEFAULT =0u
-} Mcu_ClockProfileType;
-
-// Parameter for config
-
-typedef struct
-{
-	uint32_t sysclk_hz;
-	uint32_t hclk_hz;
-	uint32_t pclk1_hz;
-	uint32_t pclk2_hz;
-	uint32_t adcclk_hz;
-	uint32_t systick_hz;
-}Mcu_ClockInfoType;
 
 #ifdef __cplusplus
 }

@@ -23,16 +23,6 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
-/* ---------------------------------------------------------
- *	Convenient Pin & Port Encoding
- *	- High nible: index port (A=0, B=1 , C=2 ,...)
- *	- Low nible: pin number  (0....15)
- * --------------------------------------------------------- */
-#define PORT_ENCODE_PIN(port_letter, pin_num)		(((uint8_t)((port_letter) - 'A') << 4 ) | ((uint8_t)(pin_num) & 0x0Fu))
-#define PORTA_PIN(n)		PORT_ENCODE_PIN('A', (n))
-#define PORTB_PIN(n)		PORT_ENCODE_PIN('B', (n))
-#define PORTC_PIN(n)		PORT_ENCODE_PIN('C', (n))
-
 typedef uint8_t Port_PinType;
 
 /* ---------------------------------------------------------
@@ -93,14 +83,14 @@ typedef struct
 	Port_InitLevelType	initLevel;		// Init Level
 } Port_PinConfigType;
 
-/* AFIO remap options */
+/* Enable/Disable remap in AFIO_MAPR*/
 typedef struct
 {
-	uint8_t remap_CAN1_PB8_PB9;		/* 0: PA11/ PA12, 1: PA8/PA9*/
-	uint8_t remap_UART1_PA9_PA10;	/* 0: PA9/PA10, 1: PB6/PB7 */
-	uint8_t remap_TIM2;				/* 0: no remap */
-	uint8_t swj_cfg_disable_jtag; 	/* 1: Disable JTAG, Enable SWD*/
-} Port_AfioRemapConfigType;
+	uint8_t Remap_CAN;			// 0: RX-PA11, TX-PA12 | RX-PB8, TX-PB9
+	uint8_t	Remap_USART1;		// 0:PA9/PA10 | 1: PB6/PB7
+	uint8_t Remap_TIM2;			// 0: no remap (TIM2_CH1 in AP0)
+	uint8_t Swj_cfg_disable;	// 1: Disable JTAG, Enable SWD
+}Port_AfioRemapConfigType;
 
 /* Config for Port driver*/
 typedef struct

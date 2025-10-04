@@ -21,38 +21,8 @@ extern "C" {
 #define PORT_AR_PATCH_VERSION		(1u)
 
 #include <stdint.h>
-#include <stdbool.h>]
-#include "Port_Cfg.h"
+#include <stdbool.h>
 #include "Port_Types.h"
-
-/* =========================================================
- * 	Shared types & constants
- * =======================================================*/
-/* Driver state*/
-typedef enum
-{
-	PORT_UNINIT = 0u,
-	PORT_INIT
-} Port_StatusType;
-
-/* =========================================================
- *  Service IDs (for DET/Logger)
- * =======================================================*/
-#define PORT_SID_INIT					(0x00u)
-#define PORT_SID_SETPINDIRECTION		(0x01u)
-#define PORT_SID_REFRESHPORTDIRECTION	(0x02u)
-#define PORT_SID_SETPINMODE				(0x03u)
-#define PORT_SID_GETVERSIONINFO			(0x04u)
-
-/* =========================================================
- *  DET Error code
- * =======================================================*/
-#define PORT_E_UNINIT					(0x01u)		// Call API when Port not init
-#define PORT_E_PARAM_POINTER			(0x02u)		// Null pointer
-#define PORT_E_PARAM_PIN				(0x03u)		// Invalid pin/not in config table
-#define PORT_E_PARAM_INVALID_MODE		(0x04u)		// Invalid mode on STM32F1
-#define PORT_E_DIRECTION_UNCHANGEABLE	(0x05u)
-#define PORT_E_MODE_UNCHANGEABLE		(0x06u)
 
 /* =========================================================
  *  API

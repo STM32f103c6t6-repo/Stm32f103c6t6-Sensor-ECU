@@ -26,30 +26,6 @@ extern "C" {
 #include "Mcu_Types.h"
 
 /* =========================================================
- *  Service ID (for DET/Logger when trace error)
- * =======================================================*/
-#define MCU_SID_INIT					(0x00u)
-#define MCU_SID_INITCLOCK				(0x01u)
-#define MCU_SID_DISTRIBUTE_PLLCLOCK		(0x02u)
-#define MCU_SID_GET_PLLSTATUS			(0x03u)
-#define MCU_SID_GET_CLOCKINFO			(0x04u)
-#define MCU_SID_SETSYSTICKHZ			(0x05u)
-#define MCU_SID_DELAYMS					(0x06u)
-#define MCU_SID_PERFORMRESET			(0x07u)
-#define MCU_SID_SETNVICGROUPING			(0x08u)
-#define MCU_SID_SETIRQPRIORITY			(0x09u)
-#define MCU_SID_ENABLEIWDG				(0x0Au)
-#define MCU_SID_KICKIWDG				(0x0Bu)
-
-/* =========================================================
- *  DET error
- * =======================================================*/
-#define MCU_E_UNINIT					(0x01u)	// Call API when Mcu is not Init
-#define MCU_E_PARAM_POINTER				(0x01u) // Null pointer
-#define MCU_E_TIMEOUT					(0x03u) // timeout
-#define MCU_E_PARAM_CONFIG				(0x04u)	// Config is error
-
-/* =========================================================
  *  From Mcu_Cfg.h:
  *  - Mcu_ClockProfileType:	choose profile clock.
  *  - Mcu_ClockInfoType: information frequency for print log.
@@ -117,7 +93,7 @@ void Mcu_DelayMs(uint32_t ms);
  * @param  out  pointer struct get infomation;
  * @return  E_NOT_OK.
  */
-Std_ReturnType Mcu_GetClockInfo(Mcu_ClockProfileType* out);
+Std_ReturnType Mcu_GetClockInfo(Mcu_ClockInfoType* out);
 
 /**
  * @brief  Watchdog (IWDG reload)
