@@ -1,5 +1,5 @@
 /* =====================================================================================================================
- *  File        : Mcu_Types.h
+ *  File        : Port_Types.h
  *  Layer       : MCAL (Port)
  *  ECU         : Sensor_ECU (STM32F103C6T6)
  *  Purpose     : Define data structure and macro for Port driver (GPIO + AFIO)
