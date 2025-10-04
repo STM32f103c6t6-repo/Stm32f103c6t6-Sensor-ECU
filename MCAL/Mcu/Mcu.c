@@ -12,7 +12,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "Mcu.h"
-#include "Mcu_Types.h"
+#include "Mcu_Cfg.h"
 #include "stm32f103xx_regs.h"
 
 /*SYST_CSR bits*/

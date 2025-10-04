@@ -21,19 +21,8 @@ extern "C" {
 #define PORT_AR_PATCH_VERSION		(1u)
 
 #include <stdint.h>
-#include <stdbool.h>]
-#include "Port_Cfg.h"
+#include <stdbool.h>
 #include "Port_Types.h"
-
-/* =========================================================
- * 	Shared types & constants
- * =======================================================*/
-/* Driver state*/
-typedef enum
-{
-	PORT_UNINIT = 0u,
-	PORT_INIT
-} Port_StatusType;
 
 /* =========================================================
  *  Service IDs (for DET/Logger)

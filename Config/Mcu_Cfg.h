@@ -105,26 +105,6 @@ extern "C" {
 #error "ADC clock > 14MHz - exceeds datasheet recommendations!"
 #endif
 
-/* =====================================================================================================================
- * API choose the config
- * ===================================================================================================================*/
-typedef enum
-{
-	MCU_CLOCK_PROFILE_DEFAULT =0u
-} Mcu_ClockProfileType;
-
-// Parameter for config
-
-typedef struct
-{
-	uint32_t sysclk_hz;
-	uint32_t hclk_hz;
-	uint32_t pclk1_hz;
-	uint32_t pclk2_hz;
-	uint32_t adcclk_hz;
-	uint32_t systick_hz;
-}Mcu_ClockInfoType;
-
 #ifdef __cplusplus
 }
 #endif

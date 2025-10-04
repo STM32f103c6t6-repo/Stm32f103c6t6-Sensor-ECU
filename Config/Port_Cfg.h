@@ -13,77 +13,18 @@
 extern "C" {
 #endif
 
-#include<stdint.h>
+#include <stdint.h>
+#include "Port_Types.h"
 
-/* =====================================================================================================================
- *  Data structure for config pin:
- *  - Mode	: input/output/analog + Pushpull/opendrain
- *  - Speed	: 2/10/50 MHz (apply for output/AF)
- *  - Pull	: none/pull-up/pull-down
- * ===================================================================================================================*/
-
-typedef enum
-{
-	PORT_MODE_INPUT_ANALOG = 0,
-	PORT_MODE_INPUT_FLOATING,
-	PORT_MODE_INPUT_PU,					//input pull-up
-	PORT_MODE_INPUT_PD,					//input pull_down
-
-	PORT_MODE_OUTPUT_PP_2M,				//output push-pull 2M
-	PORT_MODE_OUTPUT_PP_10M,			//output push-pull 10M
-	PORT_MODE_OUTPUT_PP_50M,			//output push-pull 50M
-
-	PORT_MODE_OUTPUT_OD_2M,				//output open-drain 2M
-	PORT_MODE_OUTPUT_OD_10M,			//output open-drain 10M
-	PORT_MODE_OUTPUT_OD_50M,			//output open-drain 50M
-
-	PORT_MODE_AF_PP_2M,					//alternate function push-pull 2M
-	PORT_MODE_AF_PP_10M,				//alternate function push-pull 10M
-	PORT_MODE_AF_PP_50M,				//alternate function push-pull 50M
-
-	PORT_MODE_AF_OP_2M,					//alternate function open-drain 2M
-	PORT_MODE_AF_OP_10M,				//alternate function open-drain 10M
-	PORT_MODE_AF_OP_50M,				//alternate function open-drain 50M
-} Port_PinModeType;
-
-//Initialization logic level
-
-typedef enum
-{
-	PORT_INIT_LOW = 0,
-	PORT_INIT_HIG
-} Port_InitLevelType;
-
-/* Port code + Pin config */
-#define PORT_ENCODE_PIN(port_letter,pin_num)			(((uint8_t)((port_letter) - "A") << 4 ) | ((uint8_t)(pin_num) & 0x0F))
-#define PORT_A_PIN(n)	PORT_ENCODE_PIN('A', (n))
-#define PORT_B_PIN(n)	PORT_ENCODE_PIN('B', (n))
-#define PORT_C_PIN(n)	PORT_ENCODE_PIN('C', (n))
-
-/* Config for 1 pin*/
-typedef struct
-{
-	uint8_t				Pin;
-	Port_PinModeType	Mode;
-	Port_InitLevelType	Initlevel;
-}Port_PinConfigType;
-
-/* Enable/Disable remap in AFIO_MAPR*/
-typedef struct
-{
-	uint8_t Remap_CAN;			// 0: RX-PA11, TX-PA12 | RX-PB8, TX-PB9
-	uint8_t	Remap_USART1;		// 0:PA9/PA10 | 1: PB6/PB7
-	uint8_t Remap_TIM2;			// 0: no remap (TIM2_CH1 in AP0)
-	uint8_t Swj_cfg_disable;	// 1: Disable JTAG, Enable SWD
-}Port_AfioRemapConfigType;
-
-/*Config for list pin + AFIO remap*/
-typedef struct
-{
-	const Port_PinConfigType* Pins;
-	uint32_t				  PinCount;
-	Port_AfioRemapConfigType  Afio;
-}Port_Config;
+/* ---------------------------------------------------------
+ *	Convenient Pin & Port Encoding
+ *	- High nible: index port (A=0, B=1 , C=2 ,...)
+ *	- Low nible: pin number  (0....15)
+ * --------------------------------------------------------- */
+#define PORT_ENCODE_PIN(port_letter, pin_num)		(((uint8_t)((port_letter) - 'A') << 4 ) | ((uint8_t)(pin_num) & 0x0Fu))
+#define PORTA_PIN(n)		PORT_ENCODE_PIN('A', (n))
+#define PORTB_PIN(n)		PORT_ENCODE_PIN('B', (n))
+#define PORTC_PIN(n)		PORT_ENCODE_PIN('C', (n))
 
 /* =====================================================================================================================
  *  Pin mapping for Sensor_ECU:

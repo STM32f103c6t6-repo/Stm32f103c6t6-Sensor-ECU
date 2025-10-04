@@ -22,7 +22,6 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "Mcu_Cfg.h"
 #include "Mcu_Types.h"
 
 /* =========================================================
@@ -117,7 +116,7 @@ void Mcu_DelayMs(uint32_t ms);
  * @param  out  pointer struct get infomation;
  * @return  E_NOT_OK.
  */
-Std_ReturnType Mcu_GetClockInfo(Mcu_ClockProfileType* out);
+Std_ReturnType Mcu_GetClockInfo(Mcu_ClockInfoType* out);
 
 /**
  * @brief  Watchdog (IWDG reload)
