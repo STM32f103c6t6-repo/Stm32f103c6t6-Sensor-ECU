@@ -62,60 +62,6 @@ extern "C"{
  * ===================================================================================================================*/
 #define UART_CFG_USE_STRUCT					(1u)
 
-
-#if (UART_CFG_USE_STRUCT == 1u)
-//parity mode
-typedef enum {
-	UART_PARITY_NONE = 0,
-	UART_PARITY_EVEN,
-	UART_PARITY_ODD
-} Uart_ParityModeType;
-
-// Flow control
-typedef enum
-{
-	UART_FLOW_NONE = 0,
-	UART_FLOW_RTS_CTS
-} Uart_Flow_CtrlType;
-
-/*Config for each instance */
-typedef struct
-{
-	uint32_t baurate;
-	uint8_t wordlength;		// 8 or 9
-	uint8_t	stopBits;		//1 or 2
-	Uart_ParityModeType	parity;
-	Uart_Flow_CtrlType flow;
-
-	uint8_t	TxEnable;		//enable Tx
-	uint8_t RxEnable;		//enable Rx
-	uint8_t	useInterrupts;	// 1: IRQ, 0:polling
-	uint8_t	useDmaTx;		//1:DMA Tx
-	uint8_t useDmaRx;		//1: DMA Rx
-
-	uint16_t txBufSize;		// ring buffer size
-	uint16_t rxBufSize;
-	uint16_t txTimeoutMs;	//timeout for API blocking
-	uint16_t rxTimeoutMs;
-} Uart_InstanceConfigType;
-
-// Config all instance
-typedef struct
-{
-	uint8_t useUsart1;
-	uint8_t useUsart2;
-
-	uint8_t logPort;
-	uint8_t diagPort;
-
-	Uart_InstanceConfigType usart1;
-	Uart_InstanceConfigType usart2;
-} Uart_ConfigType;
-
-extern const Uart_ConfigType Uart_Config;
-
-#endif //UART_CFG_USE_STRUCT
-
 /* =====================================================================================================================
  * Check compile-time
  * ===================================================================================================================*/
