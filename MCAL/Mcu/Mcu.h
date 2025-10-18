@@ -48,6 +48,13 @@ extern "C" {
 #define MCU_E_TIMEOUT					(0x03u) // timeout
 #define MCU_E_PARAM_CONFIG				(0x04u)	// Config is error
 
+/* =====================================================================================================================
+ * Count ticks
+ * ===================================================================================================================*/
+extern volatile	uint32_t		s_systickTicks;
+
+extern Mcu_ClockInfoType	s_clkInfo;
+
 /* =========================================================
  *  From Mcu_Cfg.h:
  *  - Mcu_ClockProfileType:	choose profile clock.

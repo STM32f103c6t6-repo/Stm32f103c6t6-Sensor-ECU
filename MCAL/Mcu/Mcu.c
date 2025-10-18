@@ -32,10 +32,10 @@
 #define IWDG_KR_KEY_WRITE			(0x5555UL)
 
 /* Static state */
-static __vo	uint32_t		s_systickTicks 	= 0;
+__vo	uint32_t		s_systickTicks 	= 0;
 static Mcu_StatusType		s_mcuStatus		= MCU_UNINIT;
 static Mcu_PllStatusType	s_pllStatus		= MCU_PLL_STATUS_UNDEFINED;
-static Mcu_ClockInfoType	s_clkInfo		= {0};
+Mcu_ClockInfoType	s_clkInfo		= {0};
 
 static void prv_FlashSetLatencyAndPreFetch(uint32_t sysclk_hz);
 static uint32_t prv_EncodeAhbPrescaler(uint32_t div);

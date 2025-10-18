@@ -53,7 +53,7 @@ typedef enum
 typedef enum
 {
 	UART_WORDLEN_8B = 8u,
-	UART_WORDLEN_8B = 9u
+	UART_WORDLEN_9B = 9u
 } Uart_WordLengthType;
 
 typedef enum
@@ -140,22 +140,25 @@ typedef struct
 /* Config for each instance */
 typedef struct
 {
-	uint32_t 			baurate;
-	uint8_t 			wordlength;		// 8 or 9
-	uint8_t				stopBits;		//1 or 2
-	Uart_ParityModeType	parity;
-	Uart_Flow_CtrlType 	flow;
+	uint32_t 				baurate;
+	uint8_t 				wordlength;		// 8 or 9
+	uint8_t					stopBits;		//1 or 2
+	Uart_ParityModeType		parity;
+	Uart_Flow_CtrlType 		flow;
 
-	uint8_t				TxEnable;		//enable Tx
-	uint8_t 			RxEnable;		//enable Rx
-	uint8_t				useInterrupts;	// 1: IRQ, 0:polling
-	uint8_t				useDmaTx;		//1:DMA Tx
-	uint8_t 			useDmaRx;		//1: DMA Rx
+	Uart_DirectionCfgType	dir;
+	Uart_TransferModeType	transMode;
 
-	uint16_t 			txBufSize;		// ring buffer size
-	uint16_t 			rxBufSize;
-	uint16_t 			txTimeoutMs;	//timeout for API blocking
-	uint16_t 			rxTimeoutMs;
+	uint8_t					TxEnable;		//enable Tx
+	uint8_t 				RxEnable;		//enable Rx
+	uint8_t					useInterrupts;	// 1: IRQ, 0:polling
+	uint8_t					useDmaTx;		//1:DMA Tx
+	uint8_t 				useDmaRx;		//1: DMA Rx
+
+	uint16_t 				txBufSize;		// ring buffer size
+	uint16_t 				rxBufSize;
+	uint16_t 				txTimeoutMs;	//timeout for API blocking
+	uint16_t 				rxTimeoutMs;
 
 	Uart_CallbacksType	cbs;
 } Uart_ChannelConfigType;
@@ -188,7 +191,7 @@ typedef struct
 
 typedef struct
 {
-	Uart_DriverStatusType	statusDriver;
+	Uart_DriverStatusType	status;
 	Uart_StatsType			stats;
 
 	Uart_RingBufferType		txRb;

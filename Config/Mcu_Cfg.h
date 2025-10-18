@@ -58,7 +58,6 @@ extern "C" {
 #define MCU_CFG_SYSTICK_HZ				(1000u) // 1000Hz -> 1ms
 #define MCU_CFG_SYSTICK_SOURCE_HCLK		(1u)	// 1: HCLK, 0: HCLK/8
 
-
 /* =====================================================================================================================
  * Priority of interrupt
  * - Group: 2-bit preemption, 2-bit subpriority

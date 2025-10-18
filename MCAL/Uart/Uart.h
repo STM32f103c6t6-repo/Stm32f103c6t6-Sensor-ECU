@@ -40,7 +40,7 @@ extern "C" {
 #define UART_SID_SETDIRECTION			(0x0Au)
 #define UART_SID_REGISTER_CALLBACK		(0x0Bu)
 #define UART_SID_GETSTATS				(0x0Cu)
-#define UART_SID_CLEARSTATS			(0x0Du)
+#define UART_SID_CLEARSTATS				(0x0Du)
 #define UART_SID_GETVERSIONINFO			(0x0Eu)
 #define UART_SID_IRQHANDLER				(0x0Fu)
 
@@ -55,6 +55,22 @@ extern "C" {
 #define UART_E_BUFFER_FULL				(0x07u)		// full ring buffer
 #define UART_E_BUFFER_EMPTY				(0x08u)		// ring buffer is empty
 #define UART_E_NOT_SUPPORTED			(0x07u)		// API not support current mode
+
+/* =========================================================
+ *  position of Bit Error in Sr reg
+ * =======================================================*/
+#define UART_SR_PE						(0x01u)
+#define UART_SR_FE						(0x02u)
+#define UART_SR_NE						(0x04u)
+#define UART_SR_ORE						(0x08u)
+#define UART_ERR_MASK					(UART_SR_PE | UART_SR_FE | UART_SR_NE | UART_SR_ORE)
+
+/* =========================================================
+ *  Baudrate config
+ * =======================================================*/
+#define UART1_BAUD 						115200
+#define UART2_BAUD 						115200
+#define UART3_BAUD 						115200
 
 /* =========================================================
  *  Build options
@@ -74,6 +90,7 @@ extern "C" {
 #ifndef		UART_CFG_EOL
 #define		UART_CFG_EOL "\r\n"
 #endif
+
 
 /* =========================================================
  * 	 Global configuration
@@ -98,22 +115,22 @@ void Uart_Deinit(void);
 /**
  * @brief  Send sync buffer, wait for completion
  */
-Std_ReturnType Uart_Write(Uart_ChannelConfigType ch, const uint8_t* data, uint16_t len, uint32_t timeoutMs);
+Std_ReturnType Uart_Write(Uart_ChannelType ch, const uint8_t* data, uint16_t len, uint32_t timeoutMs);
 
 /**
  * @brief  received sync buffer, wait for completion
  */
-Std_ReturnType Uart_Write(Uart_ChannelConfigType ch, uint8_t* data, uint16_t len, uint32_t timeoutMs);
+Std_ReturnType Uart_Read(Uart_ChannelType ch, uint8_t* data, uint16_t len, uint32_t timeoutMs);
 
 /**
  * @brief  Send a char
  */
-Std_ReturnType Uart_PutChar(Uart_ChannelConfigType ch, uint8_t byte, uint32_t timeoutMs);
+Std_ReturnType Uart_PutChar(Uart_ChannelType ch, uint8_t byte, uint32_t timeoutMs);
 
 /**
  * @brief  Received a char
  */
-Std_ReturnType Uart_GetChar(Uart_ChannelConfigType ch, uint8_t* outByte, uint32_t timeoutMs);
+Std_ReturnType Uart_GetChar(Uart_ChannelType ch, uint8_t* outByte, uint32_t timeoutMs);
 #endif
 
 #if( UART_CFG_ENABLE_ASYNC_APIS == 1u)
@@ -122,45 +139,45 @@ Std_ReturnType Uart_GetChar(Uart_ChannelConfigType ch, uint8_t* outByte, uint32_
  * @brief  Put data to TX ring buffer.
  * @return E_OK if all are filled; E_NOT_OK if buffer is out of space.
  */
-Std_ReturnType Uart_WriteAsync(Uart_ChannelConfigType ch, const uint8_t* data, uint16_t len);
+Std_ReturnType Uart_WriteAsync(Uart_ChannelType ch, const uint8_t* data, uint16_t len);
 
 /**
  * @brief  get data from TX ring buffer.
  * @return number of bits.
  */
-uint16_t Uart_ReadAsync(Uart_ChannelConfigType ch, uint8_t* data, uint16_t len);
+uint16_t Uart_ReadAsync(Uart_ChannelType ch, uint8_t* data, uint16_t len);
 
 /**
  * @brief  request flush Tx
  */
-Std_ReturnType Uart_FlushTx(Uart_ChannelConfigType ch, uint32_t timeoutMs);
+Std_ReturnType Uart_FlushTx(Uart_ChannelType ch, uint32_t timeoutMs);
 #endif
 
 /**
  * @brief  change baudrate  runtime
  */
-Std_ReturnType Uart_SetBaudrate(Uart_ChannelConfigType ch, uint32_t baud);
+Std_ReturnType Uart_SetBaudrate(Uart_ChannelType ch, uint32_t baud);
 
 /**
  * @brief  Enable/Disable Tx/Rx Direction
  */
-Std_ReturnType Uart_SetDirection(Uart_ChannelConfigType ch, Uart_DirectionCfgType dir);
+Std_ReturnType Uart_SetDirection(Uart_ChannelType ch, Uart_DirectionCfgType dir);
 
 /**
  * @brief  Register callback
  */
-Std_ReturnType Uart_RegisterCallbacks(Uart_ChannelConfigType ch, const Uart_CallbacksType* cbs);
+Std_ReturnType Uart_RegisterCallbacks(Uart_ChannelType ch, const Uart_CallbacksType* cbs);
 
 #if(UART_CFG_ENABLE_STATS == 1u)
 /**
  * @brief  Get statistical snapshots
  */
-Std_ReturnType Uart_GetStats(Uart_ChannelConfigType ch, Uart_StatsType* out);
+Std_ReturnType Uart_GetStats(Uart_ChannelType ch, Uart_StatsType* out);
 
 /**
  * @brief  Get statistical snapshots
  */
-Std_ReturnType Uart_ClearStats(Uart_ChannelConfigType ch);
+void Uart_ClearStats(Uart_ChannelType ch);
 #endif
 
 /**
@@ -171,7 +188,7 @@ void Uart_GetVersionInfo(Uart_VersionInfoType* vi);
 /**
  * @brief  IRQ entry points
  */
-void Uart_IrqHandler(Uart_ChannelConfigType* vi);
+void Uart_IrqHandler(Uart_ChannelType ch);
 
 #ifdef __cplusplus
 }
