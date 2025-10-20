@@ -20,10 +20,9 @@ extern "C" {
 #define PORT_TYPES_AR_MINOR_VERSION		(0u)
 #define PORT_TYPES_AR_PATCH_VERSION		(0u)
 
-#include <stdint.h>
-#include <stdbool.h>
+#include "Std_Types.h"
 
-typedef uint8_t Port_PinType;
+typedef uint8 Port_PinType;
 
 /* ---------------------------------------------------------
  *	Type logic level and pin direction
@@ -86,17 +85,17 @@ typedef struct
 /* Enable/Disable remap in AFIO_MAPR*/
 typedef struct
 {
-	uint8_t Remap_CAN;			// 0: RX-PA11, TX-PA12 | RX-PB8, TX-PB9
-	uint8_t	Remap_USART1;		// 0:PA9/PA10 | 1: PB6/PB7
-	uint8_t Remap_TIM2;			// 0: no remap (TIM2_CH1 in AP0)
-	uint8_t Swj_cfg_disable;	// 1: Disable JTAG, Enable SWD
+	uint8 Remap_CAN;			// 0: RX-PA11, TX-PA12 | RX-PB8, TX-PB9
+	uint8	Remap_USART1;		// 0:PA9/PA10 | 1: PB6/PB7
+	uint8 Remap_TIM2;			// 0: no remap (TIM2_CH1 in AP0)
+	uint8 Swj_cfg_disable;	// 1: Disable JTAG, Enable SWD
 }Port_AfioRemapConfigType;
 
 /* Config for Port driver*/
 typedef struct
 {
 	const Port_PinConfigType* 	pins;
-	uint32_t					pinCount;
+	uint32					pinCount;
 	Port_AfioRemapConfigType	afio;
 } Port_ConfigType;
 
@@ -105,11 +104,11 @@ typedef struct
  * --------------------------------------------------------- */
 typedef struct
 {
-	uint16_t	vendorID;
-	uint16_t	moduleID;
-	uint16_t	sw_major_version;
-	uint16_t	sw_minor_version;
-	uint16_t	sw_patch_verion;
+	uint16	vendorID;
+	uint16	moduleID;
+	uint16	sw_major_version;
+	uint16	sw_minor_version;
+	uint16	sw_patch_verion;
 } Port_VersionInfoType;
 
 /* ---------------------------------------------------------

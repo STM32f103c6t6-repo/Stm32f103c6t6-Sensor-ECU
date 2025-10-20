@@ -20,11 +20,10 @@ extern "C" {
 #define UART_TYPES_AR_MINOR_VERSION		(0u)
 #define UART_TYPES_AR_PATCH_VERSION		(0u)
 
-#include <stdint.h>
-#include <stdbool.h>
+#include "Std_Types.h"
 
 #ifndef E_OK
-typedef uint8_t		Std_ReturnType;
+typedef uint8		Std_ReturnType;
 #define E_OK		((Std_ReturnType)0x00u)
 #define E_NOT_OK	((Std_ReturnType)0x01u)
 #endif
@@ -93,8 +92,8 @@ typedef enum
 /* Enable/Disable Tx/Rx */
 typedef struct
 {
-	uint8_t txEnable;
-	uint8_t rxEnable;
+	uint8 txEnable;
+	uint8 rxEnable;
 } Uart_DirectionCfgType;
 
 /* ---------------------------------------------------------
@@ -112,18 +111,18 @@ typedef enum
 
 typedef struct
 {
-	uint32_t	txBytes;
-	uint32_t	rxBytes;
-	uint32_t	txIrqCount;
-	uint32_t	rxIrqCount;
-	uint32_t	rxOverrunCount;
-	uint32_t	framingErrCount;
-	uint32_t	parityErrCount;
+	uint32	txBytes;
+	uint32	rxBytes;
+	uint32	txIrqCount;
+	uint32	rxIrqCount;
+	uint32	rxOverrunCount;
+	uint32	framingErrCount;
+	uint32	parityErrCount;
 } Uart_StatsType;
 
 /* Prototype callbacks*/
 typedef void (*Uart_TxCompleteNotifType)(Uart_ChannelType ch);
-typedef void (*Uart_RxCompleteNotifType)(Uart_ChannelType ch, uint16_t data);
+typedef void (*Uart_RxCompleteNotifType)(Uart_ChannelType ch, uint16 data);
 typedef void (*Uart_ErrorNotifyType)(Uart_ChannelType ch, Uart_ErrorFlagType errFlags);
 
 /* Callback register follow instance*/
@@ -140,25 +139,25 @@ typedef struct
 /* Config for each instance */
 typedef struct
 {
-	uint32_t 				baurate;
-	uint8_t 				wordlength;		// 8 or 9
-	uint8_t					stopBits;		//1 or 2
+	uint32 				baurate;
+	uint8 				wordlength;		// 8 or 9
+	uint8					stopBits;		//1 or 2
 	Uart_ParityModeType		parity;
 	Uart_Flow_CtrlType 		flow;
 
 	Uart_DirectionCfgType	dir;
 	Uart_TransferModeType	transMode;
 
-	uint8_t					TxEnable;		//enable Tx
-	uint8_t 				RxEnable;		//enable Rx
-	uint8_t					useInterrupts;	// 1: IRQ, 0:polling
-	uint8_t					useDmaTx;		//1:DMA Tx
-	uint8_t 				useDmaRx;		//1: DMA Rx
+	uint8					TxEnable;		//enable Tx
+	uint8 				RxEnable;		//enable Rx
+	uint8					useInterrupts;	// 1: IRQ, 0:polling
+	uint8					useDmaTx;		//1:DMA Tx
+	uint8 				useDmaRx;		//1: DMA Rx
 
-	uint16_t 				txBufSize;		// ring buffer size
-	uint16_t 				rxBufSize;
-	uint16_t 				txTimeoutMs;	//timeout for API blocking
-	uint16_t 				rxTimeoutMs;
+	uint16 				txBufSize;		// ring buffer size
+	uint16 				rxBufSize;
+	uint16 				txTimeoutMs;	//timeout for API blocking
+	uint16 				rxTimeoutMs;
 
 	Uart_CallbacksType	cbs;
 } Uart_ChannelConfigType;
@@ -166,9 +165,9 @@ typedef struct
 // Config all instance
 typedef struct
 {
-	uint8_t useCh1;
-	uint8_t useCh2;
-	uint8_t useCh3;
+	uint8 useCh1;
+	uint8 useCh2;
+	uint8 useCh3;
 
 	Uart_ChannelType logPort;
 	Uart_ChannelType diagPort;
@@ -183,10 +182,10 @@ typedef struct
  * --------------------------------------------------------- */
 typedef struct
 {
-	volatile uint16_t 	head;
-	volatile uint16_t 	tail;
-	uint16_t			size;
-	uint8_t*			buf;
+	volatile uint16 	head;
+	volatile uint16 	tail;
+	uint16			size;
+	uint8*			buf;
 } Uart_RingBufferType;
 
 typedef struct
@@ -197,8 +196,8 @@ typedef struct
 	Uart_RingBufferType		txRb;
 	Uart_RingBufferType		rxRb;
 
-	uint8_t					parityEnable;
-	uint8_t					wordLen9b;
+	uint8					parityEnable;
+	uint8					wordLen9b;
 } Uart_ChannelHandleType;
 
 /* ---------------------------------------------------------
@@ -206,11 +205,11 @@ typedef struct
  * --------------------------------------------------------- */
 typedef struct
 {
-	uint16_t	vendorID;
-	uint16_t	moduleID;
-	uint16_t	sw_major_version;
-	uint16_t	sw_minor_version;
-	uint16_t	sw_patch_verion;
+	uint16	vendorID;
+	uint16	moduleID;
+	uint16	sw_major_version;
+	uint16	sw_minor_version;
+	uint16	sw_patch_verion;
 } Uart_VersionInfoType;
 
 #ifdef __cplusplus

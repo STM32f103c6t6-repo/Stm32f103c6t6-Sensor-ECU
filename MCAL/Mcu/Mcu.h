@@ -20,8 +20,7 @@ extern "C" {
 #define MCU_AR_MINOR_VERSION		(0u)
 #define MCU_AR_PATCH_VERSION		(0u)
 
-#include <stdint.h>
-#include <stdbool.h>
+
 #include "Mcu_Types.h"
 
 /* =========================================================
@@ -51,7 +50,7 @@ extern "C" {
 /* =====================================================================================================================
  * Count ticks
  * ===================================================================================================================*/
-extern volatile	uint32_t		s_systickTicks;
+extern volatile	uint32		s_systickTicks;
 
 extern Mcu_ClockInfoType	s_clkInfo;
 
@@ -94,7 +93,7 @@ Std_ReturnType Mcu_DistributePllClock(void);
  * @brief  Config NVIC priority group follow Mcu_Cfg.h
  * @return E_OK if success
  */
-Std_ReturnType Mcu_SetNvicPriorityGrouping(uint32_t prigroup_value);
+Std_ReturnType Mcu_SetNvicPriorityGrouping(uint32 prigroup_value);
 
 /**
  * @brief  set priority for some IRQ
@@ -104,19 +103,19 @@ Std_ReturnType Mcu_SetNvicPriorityGrouping(uint32_t prigroup_value);
  * @return E_OK/E_NOT_OK
  */
 
-Std_ReturnType Mcu_SetIrqPriority(uint32_t irqn, uint8_t PreemptPrio, uint8_t subPrio);
+Std_ReturnType Mcu_SetIrqPriority(uint32 irqn, uint8 PreemptPrio, uint8 subPrio);
 
 /**
  * @brief  Enable SysTick to create ticks at the desired frequency (e.g. 1000 Hz).
  * @param  tick_hz SysTick frequency, source follow Mcu_Cfg.h
  * @return E_OK/E_NOT_OK
  */
-Std_ReturnType Mcu_Set_SysTickHZ(uint32_t tick_hz);
+Std_ReturnType Mcu_Set_SysTickHZ(uint32 tick_hz);
 
 /**
  * @brief  delay ms follow SysTick.
  */
-void Mcu_DelayMs(uint32_t ms);
+void Mcu_DelayMs(uint32 ms);
 
 /**
  * @brief  get information frequency.

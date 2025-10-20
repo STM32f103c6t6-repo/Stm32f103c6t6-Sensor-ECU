@@ -19,11 +19,10 @@ extern "C" {
 #define MCU_TYPE_AR_MINOR_VERSION		(0u)
 #define MCU_TYPE_AR_PATCH_VERSION		(0u)
 
-#include<stdint.h>
-#include<stdbool.h>
+#include "Std_Types.h"
 
 #ifndef E_OK
-typedef uint8_t Std_ReturnType;
+typedef uint8 Std_ReturnType;
 #define E_OK		((Std_ReturnType)0x00u)
 #define E_NOT_OK	((Std_ReturnType)0x01u)
 #endif
@@ -40,12 +39,12 @@ typedef enum
 
 typedef struct
 {
-	uint32_t sysclk_hz;
-	uint32_t hclk_hz;
-	uint32_t pclk1_hz;
-	uint32_t pclk2_hz;
-	uint32_t adcclk_hz;
-	uint32_t systick_hz;
+	uint32 sysclk_hz;
+	uint32 hclk_hz;
+	uint32 pclk1_hz;
+	uint32 pclk2_hz;
+	uint32 adcclk_hz;
+	uint32 systick_hz;
 }Mcu_ClockInfoType;
 
 /* =====================================================================================================================
@@ -68,11 +67,11 @@ typedef enum
 /*prameter to describe clock*/
 typedef struct
 {
-	uint32_t sysclk_hz;		//SYSCLK after PLL
-	uint32_t hclk_hz;		//AHB(HCLK)
-	uint32_t pclk1_hz;		//APB1
-	uint32_t pclk2_hz;		//APB2
-	uint32_t adcclk_hz;		//Adc clock
+	uint32 sysclk_hz;		//SYSCLK after PLL
+	uint32 hclk_hz;		//AHB(HCLK)
+	uint32 pclk1_hz;		//APB1
+	uint32 pclk2_hz;		//APB2
+	uint32 adcclk_hz;		//Adc clock
 } Mcu_ClockRawType;
 
 /* =====================================================================================================================
@@ -151,8 +150,8 @@ typedef enum
 
 typedef struct
 {
-	uint8_t preemptPrio;
-	uint8_t subPrio;
+	uint8 preemptPrio;
+	uint8 subPrio;
 }Mcu_IrqPriorityType;
 
 /* =====================================================================================================================
@@ -172,12 +171,12 @@ typedef enum
 /*bit mask reset flag of RCC_CSR for Mcu.c to decode fast*/
 typedef struct
 {
-	uint8_t por;	//Power-on/PDR
-	uint8_t pin;	//NRST pin
-	uint8_t sw;		//Software
-	uint8_t iwdg;	//independent watchdog
-	uint8_t wwdg;	//window watchdog
-	uint8_t lpw;	//low-power reset
+	uint8 por;	//Power-on/PDR
+	uint8 pin;	//NRST pin
+	uint8 sw;		//Software
+	uint8 iwdg;	//independent watchdog
+	uint8 wwdg;	//window watchdog
+	uint8 lpw;	//low-power reset
 } Mcu_ResetFlagsType;
 
 /* Decode result reset for logger in*/
@@ -211,9 +210,9 @@ typedef struct
  * ===================================================================================================================*/
 typedef struct
 {
-	uint8_t		enable;			// 1: enable IWDG
-	uint16_t	prescaler;		// 4...256
-	uint16_t	timeoutMs;		// Timeout Target
+	uint8		enable;			// 1: enable IWDG
+	uint16	prescaler;		// 4...256
+	uint16	timeoutMs;		// Timeout Target
 } Mcu_IwdgConfigType;
 
 /* =====================================================================================================================
@@ -231,14 +230,14 @@ typedef struct
 	Mcu_AhbPrescalerType	apb2Presc;
 
 	/* ADC prescaler */
-	uint8_t					adcPresc;
+	uint8					adcPresc;
 
 	/* Flash Latency with SYSCLK*/
 	Mcu_FlashLatencyType	flashLatency;
 
 	/* SysTick */
 	Mcu_SysTickClksrcType	systickSrc;
-	uint32_t				systickHz;
+	uint32				systickHz;
 
 	/* NVIC default group */
 	Mcu_NvicPrigroupType	nvicPrigroup;

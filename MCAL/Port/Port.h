@@ -20,8 +20,6 @@ extern "C" {
 #define PORT_AR_MINOR_VERSION		(0u)
 #define PORT_AR_PATCH_VERSION		(0u)
 
-#include <stdint.h>
-#include <stdbool.h>
 #include "Port_Types.h"
 
 /* =========================================================

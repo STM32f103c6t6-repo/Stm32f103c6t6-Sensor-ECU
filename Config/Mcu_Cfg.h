@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-#include<stdint.h>
+#include"Std_Types.h"
 
 /* =====================================================================================================================
  *  Target clock and parameter.

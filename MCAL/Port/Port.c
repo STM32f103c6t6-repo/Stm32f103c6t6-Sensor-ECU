@@ -5,9 +5,6 @@
  *  Purpose     : Apply Port driver (config GPIO + AFIO remap) for STM32F1.
  * ===================================================================================================================*/
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
 #include "Port.h"
 #include "Port_Cfg.h"
 #include "stm32f103xx_regs.h"
@@ -21,13 +18,13 @@
 
 /*	Driver state */
 static Port_StatusType s_portStatus		= PORT_UNINIT;
-static const Port_ConfigType* s_cfg		= NULL;
+static const Port_ConfigType* s_cfg		= NULL_PTR;
 
 /* Decode Pin and pin number 0..15 */
-static inline GPIO_TypeDef* prv_GetGpioFromPin(Port_PinType pin, uint8_t* outPinNum)
+static inline GPIO_TypeDef* prv_GetGpioFromPin(Port_PinType pin, uint8* outPinNum)
 {
-	uint8_t portIndex	= (pin >> 4) & 0x0Fu;
-	uint8_t pinNum		= (pin & 0x0Fu);
+	uint8 portIndex	= (pin >> 4) & 0x0Fu;
+	uint8 pinNum		= (pin & 0x0Fu);
 
 	if (outPinNum) { *outPinNum = pinNum; }
 
@@ -43,11 +40,11 @@ static inline GPIO_TypeDef* prv_GetGpioFromPin(Port_PinType pin, uint8_t* outPin
 /* Enable Clock for working Port */
 static void prv_EnableGpioClocksFromConfig( const Port_ConfigType* cfg)
 {
-	uint32_t en_apb2 = RCC->APB2ENR | (1UL << 0);
+	uint32 en_apb2 = RCC->APB2ENR | (1UL << 0);
 
-	for(uint32_t i = 0 ; i < cfg -> pinCount; i++)
+	for(uint32 i = 0 ; i < cfg -> pinCount; i++)
 	{
-		uint8_t portIndex = (cfg->pins[i].pin >> 4) & 0x0Fu;
+		uint8 portIndex = (cfg->pins[i].pin >> 4) & 0x0Fu;
 
 		switch(portIndex)
 		{
@@ -63,11 +60,11 @@ static void prv_EnableGpioClocksFromConfig( const Port_ConfigType* cfg)
 /* Port_PinModeType -> Mode & CNF[1:0] + PullUp/PullDown flag*/
 typedef struct
 {
-	uint32_t modeBits;
-	uint32_t cnfBits;
-	uint8_t isInput;
-	uint8_t setPU;
-	uint8_t setPD;
+	uint32 modeBits;
+	uint32 cnfBits;
+	uint8 isInput;
+	uint8 setPU;
+	uint8 setPD;
 } prv_ModeMap_t;
 
 static prv_ModeMap_t prv_MapMode(Port_PinModeType m)
@@ -104,11 +101,11 @@ static prv_ModeMap_t prv_MapMode(Port_PinModeType m)
 }
 
 /* Write Mode/Cnf for 1 Pin*/
-static void prv_WritePinCR(GPIO_TypeDef* GPIOx, uint8_t pinNum, uint32_t modeBits, uint32_t cnfBits)
+static void prv_WritePinCR(GPIO_TypeDef* GPIOx, uint8 pinNum, uint32 modeBits, uint32 cnfBits)
 {
-	__vo uint32_t* CR = (pinNum < 8) ? &GPIOx->CRL : &GPIOx->CRH;
-	uint8_t	shift = (pinNum & 0x07) * 4u;
-	uint32_t val = *CR;
+	__vo uint32* CR = (pinNum < 8) ? &GPIOx->CRL : &GPIOx->CRH;
+	uint8	shift = (pinNum & 0x07) * 4u;
+	uint32 val = *CR;
 
 	val &= ~(0xFu << shift);
 	val |= (((modeBits & 0x3u) | ((cnfBits & 0x3u) << 2)) << shift);
@@ -116,7 +113,7 @@ static void prv_WritePinCR(GPIO_TypeDef* GPIOx, uint8_t pinNum, uint32_t modeBit
 }
 
 /* Set ODR level for input PU/PD or output init level */
-static inline void prv_WriteOdr( GPIO_TypeDef* GPIOx, uint8_t pinNum, bool high)
+static inline void prv_WriteOdr( GPIO_TypeDef* GPIOx, uint8 pinNum, bool high)
 {
 	if(high)
 	{
@@ -129,7 +126,7 @@ static inline void prv_WriteOdr( GPIO_TypeDef* GPIOx, uint8_t pinNum, bool high)
 /* Apply AFIO remap follow Port_AfoRemapCfg */
 static void prv_ApplyAfioRemap(const Port_AfioRemapConfigType* afioCfg)
 {
-	uint32_t mapr = AFIO -> MAPR;
+	uint32 mapr = AFIO -> MAPR;
 
 	//CAN remap: CAN_REMAP[14:13] = 10b for use PB8/PB9
 	mapr &= ~AFIO_MAPR_CAN_REMAP_Msk;
@@ -154,12 +151,12 @@ static void prv_ApplyAfioRemap(const Port_AfioRemapConfigType* afioCfg)
 }
 
 /* Find index Pin in config table, return -1 if not found */
-static int32_t prv_FindPinInConfig(Port_PinType pin)
+static sint32 prv_FindPinInConfig(Port_PinType pin)
 {
 	if(!s_cfg) return -1;
-	for(uint32_t i = 0; i < s_cfg->pinCount;i++)
+	for(uint32 i = 0; i < s_cfg->pinCount;i++)
 	{
-		if(s_cfg->pins[i].pin == pin) return (int32_t) i;
+		if(s_cfg->pins[i].pin == pin) return (sint32) i;
 	}
 	return -1;
 }
@@ -170,7 +167,7 @@ static int32_t prv_FindPinInConfig(Port_PinType pin)
 
 void Port_Init(const Port_ConfigType* ConfigPtr)
 {
-	if(ConfigPtr == NULL) { return; }
+	if(ConfigPtr == NULL_PTR) { return; }
 
 	s_cfg = ConfigPtr;
 
@@ -181,18 +178,18 @@ void Port_Init(const Port_ConfigType* ConfigPtr)
 	prv_ApplyAfioRemap(&s_cfg->afio);
 
 	// Config each pin and ODR */
-	for(uint32_t i = 0; i < s_cfg->pinCount ; i++)
+	for(uint32 i = 0; i < s_cfg->pinCount ; i++)
 	{
 		const Port_PinConfigType* pc = &s_cfg->pins[i];
 
-		uint8_t pinNum = 0 ;
+		uint8 pinNum = 0 ;
 		GPIO_TypeDef* GPIOx =  prv_GetGpioFromPin(pc -> pin, &pinNum);
 
 		prv_ModeMap_t mm = prv_MapMode(pc->mode);
 
 		//with InputPU/PD: set ODR and write CNF = 10
-		if(mm.isInput && mm.setPU) { prv_WriteOdr(GPIOx, pinNum, true); }
-		if(mm.isInput && mm.setPD) { prv_WriteOdr(GPIOx, pinNum, false); }
+		if(mm.isInput && mm.setPU) { prv_WriteOdr(GPIOx, pinNum, TRUE); }
+		if(mm.isInput && mm.setPD) { prv_WriteOdr(GPIOx, pinNum, FALSE); }
 
 		prv_WritePinCR(GPIOx, pinNum, mm.modeBits, mm.cnfBits);
 
@@ -209,10 +206,10 @@ void Port_SetPinDirection(Port_PinType Pin, Port_PinDirectionType Direction)
 {
 	if(s_portStatus != PORT_INIT) { return; }
 
-	int32_t idx = prv_FindPinInConfig(Pin);
+	sint32 idx = prv_FindPinInConfig(Pin);
 	if(idx < 0) { return; }
 
-	uint8_t pinNum = 0;
+	uint8 pinNum = 0;
 	GPIO_TypeDef* GPIOx = prv_GetGpioFromPin(Pin, &pinNum);
 
 	if(Direction == PORT_PIN_IN)
@@ -227,16 +224,16 @@ void Port_SetPinDirection(Port_PinType Pin, Port_PinDirectionType Direction)
 void Port_RefreshPortDirection(void)
 {
 	if(s_portStatus != PORT_INIT) { return; }
-	for( uint32_t i = 0; i < s_cfg -> pinCount; i++)
+	for( uint32 i = 0; i < s_cfg -> pinCount; i++)
 	{
 		const Port_PinConfigType* pc = &s_cfg->pins[i];
-		uint8_t pinNum = 0;
+		uint8 pinNum = 0;
 		GPIO_TypeDef* GPIOx = prv_GetGpioFromPin(pc->pin, &pinNum);
 
 		prv_ModeMap_t mm = prv_MapMode(pc->mode);
 
-		if(mm.isInput && mm.setPU){ prv_WriteOdr(GPIOx, pinNum, true);}
-		if(mm.isInput && mm.setPD){ prv_WriteOdr(GPIOx, pinNum, false);}
+		if(mm.isInput && mm.setPU){ prv_WriteOdr(GPIOx, pinNum, TRUE);}
+		if(mm.isInput && mm.setPD){ prv_WriteOdr(GPIOx, pinNum, FALSE);}
 
 		prv_WritePinCR(GPIOx, pinNum, mm.modeBits , mm.cnfBits );
 	}
@@ -246,12 +243,12 @@ void Port_SetPinMode(Port_PinType Pin, Port_PinModeType Mode)
 {
 	if(s_portStatus != PORT_INIT){return; }
 
-	uint8_t pinNum = 0;
+	uint8 pinNum = 0;
 	GPIO_TypeDef* GPIOx = prv_GetGpioFromPin(Pin, &pinNum);
 	prv_ModeMap_t mm = prv_MapMode(Mode);
 
-	if(mm.isInput && mm.setPU) { prv_WriteOdr(GPIOx, pinNum, true); }
-	if(mm.isInput && mm.setPD) { prv_WriteOdr(GPIOx, pinNum, false); }
+	if(mm.isInput && mm.setPU) { prv_WriteOdr(GPIOx, pinNum, TRUE); }
+	if(mm.isInput && mm.setPD) { prv_WriteOdr(GPIOx, pinNum, FALSE); }
 
 	prv_WritePinCR(GPIOx, pinNum, mm.modeBits, mm.cnfBits);
 }
@@ -260,7 +257,7 @@ void Port_WritePin(Port_PinType Pin, Port_PinLevelType Level)
 {
 	if(s_portStatus != PORT_INIT) {return; }
 
-	uint8_t pinNum = 0;
+	uint8 pinNum = 0;
 	GPIO_TypeDef* GPIOx = prv_GetGpioFromPin(Pin, &pinNum);
 
 	if(Level == PORT_PIN_LEVEL_HIGH)
@@ -275,14 +272,14 @@ Port_PinLevelType Port_ReadPin(Port_PinType Pin)
 {
 	if(s_portStatus != PORT_INIT ) { return PORT_PIN_LEVEL_LOW; }
 
-	uint8_t pinNum = 0 ;
+	uint8 pinNum = 0 ;
 	GPIO_TypeDef* GPIOx = prv_GetGpioFromPin(Pin, &pinNum);
 	return (( (GPIOx -> IDR) & (1UL << pinNum)) ? PORT_PIN_LEVEL_HIGH : PORT_PIN_LEVEL_LOW);
 }
 
 void Port_GetVersionInfo(Port_VersionInfoType* versioninfo)
 {
-	if(versioninfo == NULL){ return ; }
+	if(versioninfo == NULL_PTR){ return ; }
 	versioninfo->vendorID 				= PORT_VENDOR_ID;
 	versioninfo->moduleID				= PORT_MODULE_ID;
 	versioninfo->sw_major_version		= PORT_SW_MAJOR_VERSION;

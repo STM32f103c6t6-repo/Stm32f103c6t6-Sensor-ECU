@@ -8,9 +8,6 @@
  *  Notes       :
  * ===================================================================================================================*/
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
 #include "Mcu.h"
 #include "Mcu_Cfg.h"
 #include "stm32f103xx_regs.h"
@@ -32,25 +29,25 @@
 #define IWDG_KR_KEY_WRITE			(0x5555UL)
 
 /* Static state */
-__vo	uint32_t		s_systickTicks 	= 0;
+__vo	uint32		s_systickTicks 	= 0;
 static Mcu_StatusType		s_mcuStatus		= MCU_UNINIT;
 static Mcu_PllStatusType	s_pllStatus		= MCU_PLL_STATUS_UNDEFINED;
 Mcu_ClockInfoType	s_clkInfo		= {0};
 
-static void prv_FlashSetLatencyAndPreFetch(uint32_t sysclk_hz);
-static uint32_t prv_EncodeAhbPrescaler(uint32_t div);
-static uint32_t prv_EncodeApbPrescaler(uint32_t div);
-static uint32_t prv_EncodeAdcPrescaler(uint32_t div);
-static uint32_t prv_EncodePllMul(uint32_t mul);
+static void prv_FlashSetLatencyAndPreFetch(uint32 sysclk_hz);
+static uint32 prv_EncodeAhbPrescaler(uint32 div);
+static uint32 prv_EncodeApbPrescaler(uint32 div);
+static uint32 prv_EncodeAdcPrescaler(uint32 div);
+static uint32 prv_EncodePllMul(uint32 mul);
 
 /* Timeout (avoid hang)*/
-static inline bool prv_WaitFlagSet(__vo const uint32_t* reg, uint32_t mask, uint32_t loops)
+static inline bool prv_WaitFlagSet(__vo const uint32* reg, uint32 mask, uint32 loops)
 {
 	while(((*reg) & mask) == 0)
 	{
-		if(loops-- == 0U) return false;
+		if(loops-- == 0U) return FALSE;
 	}
-	return true;
+	return TRUE;
 }
 
 Std_ReturnType Mcu_Init(Mcu_ClockProfileType profile)
@@ -81,7 +78,7 @@ Std_ReturnType Mcu_Init(Mcu_ClockProfileType profile)
 	prv_FlashSetLatencyAndPreFetch(MCU_CFG_SYSCLK_FREQ_HZ);
 
 	/* config prescaler bus */
-	uint32_t cfgr = RCC->CFGR;
+	uint32 cfgr = RCC->CFGR;
 
 	/* AHB prescaler (HPRE) - bits 7:4 */
 	cfgr &= ~(0xFUL << 4);
@@ -136,13 +133,13 @@ Std_ReturnType Mcu_DistributePllClock(void)
 	if(s_pllStatus != MCU_PLL_LOCKED) return E_NOT_OK;
 
 	/* SW(1:0) = 10b -> SYSCLK = PLL */
-	uint32_t cfgr = RCC -> CFGR;
+	uint32 cfgr = RCC -> CFGR;
 	cfgr &= ~(0x3UL << 0);
 	cfgr |=  (0x2UL << 0);
 	RCC->CFGR = cfgr;
 
 	/*wait SWS (3:2) = 10b */
-	for( uint32_t t = 0; t < 1000000U;t++)
+	for( uint32 t = 0; t < 1000000U;t++)
 	{
 		if(((RCC->CFGR >>2) & 0x3UL) == 0x2UL)
 		{
@@ -167,10 +164,10 @@ Mcu_PllStatusType Mcu_GetPllStatus(void)
 	return s_pllStatus;
 }
 
-Std_ReturnType Mcu_SetNvicPriorityGrouping(uint32_t prigroup_value)
+Std_ReturnType Mcu_SetNvicPriorityGrouping(uint32 prigroup_value)
 {
 	/*Write AIRCR with VECTKEY*/
-	uint32_t reg = SCB_AIRCR;
+	uint32 reg = SCB_AIRCR;
 	reg &= ~(0x7UL << SCB_AIRCR_PRIGROUP_Pos);
 	reg = (reg & ~(0xFFFFUL << 16)) | SCB_AIRCR_VECTKEY;
 	reg |= ((prigroup_value & 0x7UL) << SCB_AIRCR_PRIGROUP_Pos);
@@ -178,19 +175,19 @@ Std_ReturnType Mcu_SetNvicPriorityGrouping(uint32_t prigroup_value)
 	return E_OK;
 }
 
-Std_ReturnType Mcu_SetIrqPriority(uint32_t irqn, uint8_t preemptPrio, uint8_t subPrio)
+Std_ReturnType Mcu_SetIrqPriority(uint32 irqn, uint8 preemptPrio, uint8 subPrio)
 {
 	(void)subPrio;
 	if(irqn < 0){ return E_NOT_OK;} //Do not configure system exceptions here.
 
-	NVIC_IPR_BASE[(uint32_t)irqn] = (uint8_t)(preemptPrio << 4); // 4 MSB
+	NVIC_IPR_BASE[(uint32)irqn] = (uint8)(preemptPrio << 4); // 4 MSB
 	return E_OK;
 }
 
-Std_ReturnType Mcu_SetSysTickHz(uint32_t tick_hz)
+Std_ReturnType Mcu_SetSysTickHz(uint32 tick_hz)
 {
-	uint32_t hclk 	= (MCU_CFG_SYSTICK_SOURCE_HCLK == 1u) ? MCU_CFG_AHB_FREQ_HZ : (MCU_CFG_AHB_FREQ_HZ / 8u);
-	uint32_t reload = (hclk / tick_hz) -1U;
+	uint32 hclk 	= (MCU_CFG_SYSTICK_SOURCE_HCLK == 1u) ? MCU_CFG_AHB_FREQ_HZ : (MCU_CFG_AHB_FREQ_HZ / 8u);
+	uint32 reload = (hclk / tick_hz) -1U;
 	if(reload > 0x00FFFFFFUL) return E_NOT_OK;
 
 	/* Reset Systick */
@@ -199,7 +196,7 @@ Std_ReturnType Mcu_SetSysTickHz(uint32_t tick_hz)
 	SYST_CVR = 0U;
 
 	/* Enable: CLKSOURCE follow config, TICKINT on*/
-	uint32_t csr = (1UL << SYST_CSR_TICKINT_Pos) | (1UL << SYST_CSR_ENABLE_Pos);
+	uint32 csr = (1UL << SYST_CSR_TICKINT_Pos) | (1UL << SYST_CSR_ENABLE_Pos);
 	if(MCU_CFG_SYSTICK_SOURCE_HCLK == 1u) { csr |= (1UL << SYST_CSR_CLKSOURCE_Pos);}
 	SYST_CSR	= csr;
 
@@ -213,15 +210,15 @@ void SysTick_Handler(void)
 	s_systickTicks++;
 }
 
-void Mcu_DelayMs(uint32_t ms)
+void Mcu_DelayMs(uint32 ms)
 {
-	uint32_t start = s_systickTicks;
+	uint32 start = s_systickTicks;
 	while ((s_systickTicks - start) < ms){}
 }
 
 Std_ReturnType Mcu_GetClockInfo(Mcu_ClockInfoType* out)
 {
-	if(out == NULL){ return E_NOT_OK; }
+	if(out == NULL_PTR){ return E_NOT_OK; }
 	*out = s_clkInfo;
 	return (s_mcuStatus == MCU_INIT) ? E_OK : E_NOT_OK;
 }
@@ -237,7 +234,7 @@ Std_ReturnType Mcu_EnableIwdg(void)
 
 	// 2. Prescaler.
 	// Map prescaler: hardware PR[2:0]: 0:4,1:8,2:16,3:32,4:64,5:128,6:256
-	uint32_t pr_val = 0U;
+	uint32 pr_val = 0U;
 	switch(MCU_CFG_IWDG_PRESC)
 	{
 	case 4: 	pr_val = 0; break;
@@ -254,8 +251,8 @@ Std_ReturnType Mcu_EnableIwdg(void)
 	// 3. calculate reload from timeout
 	// LSI ~ 40kHz -> tick = presc / 4000 s. RLR = timeout_s / tick -1
 
-	uint32_t lsi_hz = 40000U;
-	uint32_t ticks	= (uint32_t)(((uint64_t)MCU_CFG_IWDG_TIMEOUT_MS * (uint64_t)lsi_hz) / (1000ULL * (uint64_t)MCU_CFG_IWDG_PRESC));
+	uint32 lsi_hz = 40000U;
+	uint32 ticks	= (uint32)(((uint64_t)MCU_CFG_IWDG_TIMEOUT_MS * (uint64_t)lsi_hz) / (1000ULL * (uint64_t)MCU_CFG_IWDG_PRESC));
 	if(ticks == 0U) { ticks = 1U;}
 	if(ticks > 0x0FFFU) {ticks = 0x0FFFU;}
 	IWDG_RLR = (ticks & 0x0FFFU);
@@ -297,21 +294,21 @@ __attribute__((weak)) void MCu_PllLockedHook(void) {}
 __attribute__((weak)) void Mcu_ClockInitErrorHook(void) {}
 
 /* Local helpers impl */
-static void prv_FlashSetLatencyAndPreFetch(uint32_t sysclk_hz)
+static void prv_FlashSetLatencyAndPreFetch(uint32 sysclk_hz)
 {
-	uint32_t lat = 0U;
+	uint32 lat = 0U;
 	if(sysclk_hz <= 24000000UL)			{ lat = 0U; }
 	else if(sysclk_hz <= 48000000UL)	{ lat = 1U; }
 	else 								{ lat = 2U; }
 
-	uint32_t acr = FLASH_ACR;
+	uint32 acr = FLASH_ACR;
 	acr &= ~(0x7UL << FLASH_ACR_LATENCY_Pos);
 	acr |= (lat << FLASH_ACR_LATENCY_Pos);
 	acr |= (1UL << FLASH_ACR_PRFTBE_Pos); //enable prefetch
 	FLASH_ACR = acr;
 }
 
-static uint32_t prv_EncodeAhbPrescaler(uint32_t div)
+static uint32 prv_EncodeAhbPrescaler(uint32 div)
 {
 	/* HPRE encoding: 0xxx: /1, 1000:/2,1001:/4,1010:/8,1011:/16,1100:/64,1101:/128,1110:/256,1111:/512 */
 	switch(div)
@@ -329,7 +326,7 @@ static uint32_t prv_EncodeAhbPrescaler(uint32_t div)
 	}
 }
 
-static uint32_t prv_EncodeApbPrescaler(uint32_t div)
+static uint32 prv_EncodeApbPrescaler(uint32 div)
 {
 	/* PPRE encoding: 0xx:/1, 100:/2,101:/4,110:/8,111:/16 */
 	switch(div)
@@ -343,7 +340,7 @@ static uint32_t prv_EncodeApbPrescaler(uint32_t div)
 	}
 }
 
-static uint32_t prv_EncodeAdcPrescaler(uint32_t div)
+static uint32 prv_EncodeAdcPrescaler(uint32 div)
 {
 	/* ADCPRE bits: 00:/2, 01:/4, 10:/6, 11:/8 */
 	switch(div)
@@ -356,7 +353,7 @@ static uint32_t prv_EncodeAdcPrescaler(uint32_t div)
 	}
 }
 
-static uint32_t prv_EncodePllMul(uint32_t mul)
+static uint32 prv_EncodePllMul(uint32 mul)
 {
 	/* PLLMUL bits (21:18): 0000:x2 ... 0111:x9, 1000:x10 ... 1110:x16 (F1 classic) */
 	if( mul < 2U)  { mul = 2U; }

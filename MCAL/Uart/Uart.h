@@ -20,8 +20,6 @@ extern "C" {
 #define Uart_AR_MINOR_VERSION		(0u)
 #define Uart_AR_PATCH_VERSION		(0u)
 
-#include <stdint.h>
-#include <stdbool.h>
 #include "Uart_Types.h"
 
 /* =========================================================
@@ -115,22 +113,22 @@ void Uart_Deinit(void);
 /**
  * @brief  Send sync buffer, wait for completion
  */
-Std_ReturnType Uart_Write(Uart_ChannelType ch, const uint8_t* data, uint16_t len, uint32_t timeoutMs);
+Std_ReturnType Uart_Write(Uart_ChannelType ch, const uint8* data, uint16 len, uint32 timeoutMs);
 
 /**
  * @brief  received sync buffer, wait for completion
  */
-Std_ReturnType Uart_Read(Uart_ChannelType ch, uint8_t* data, uint16_t len, uint32_t timeoutMs);
+Std_ReturnType Uart_Read(Uart_ChannelType ch, uint8* data, uint16 len, uint32 timeoutMs);
 
 /**
  * @brief  Send a char
  */
-Std_ReturnType Uart_PutChar(Uart_ChannelType ch, uint8_t byte, uint32_t timeoutMs);
+Std_ReturnType Uart_PutChar(Uart_ChannelType ch, uint8 byte, uint32 timeoutMs);
 
 /**
  * @brief  Received a char
  */
-Std_ReturnType Uart_GetChar(Uart_ChannelType ch, uint8_t* outByte, uint32_t timeoutMs);
+Std_ReturnType Uart_GetChar(Uart_ChannelType ch, uint8* outByte, uint32 timeoutMs);
 #endif
 
 #if( UART_CFG_ENABLE_ASYNC_APIS == 1u)
@@ -139,24 +137,24 @@ Std_ReturnType Uart_GetChar(Uart_ChannelType ch, uint8_t* outByte, uint32_t time
  * @brief  Put data to TX ring buffer.
  * @return E_OK if all are filled; E_NOT_OK if buffer is out of space.
  */
-Std_ReturnType Uart_WriteAsync(Uart_ChannelType ch, const uint8_t* data, uint16_t len);
+Std_ReturnType Uart_WriteAsync(Uart_ChannelType ch, const uint8* data, uint16 len);
 
 /**
  * @brief  get data from TX ring buffer.
  * @return number of bits.
  */
-uint16_t Uart_ReadAsync(Uart_ChannelType ch, uint8_t* data, uint16_t len);
+uint16 Uart_ReadAsync(Uart_ChannelType ch, uint8* data, uint16 len);
 
 /**
  * @brief  request flush Tx
  */
-Std_ReturnType Uart_FlushTx(Uart_ChannelType ch, uint32_t timeoutMs);
+Std_ReturnType Uart_FlushTx(Uart_ChannelType ch, uint32 timeoutMs);
 #endif
 
 /**
  * @brief  change baudrate  runtime
  */
-Std_ReturnType Uart_SetBaudrate(Uart_ChannelType ch, uint32_t baud);
+Std_ReturnType Uart_SetBaudrate(Uart_ChannelType ch, uint32 baud);
 
 /**
  * @brief  Enable/Disable Tx/Rx Direction

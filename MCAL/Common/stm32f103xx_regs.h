@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-#include <stdint.h>
+#include <Std_Types.h>
 
 #define __vo 							volatile
 
@@ -34,37 +34,37 @@ extern "C" {
 
 typedef struct
 {
-	__vo uint32_t CR;			//0x00
-	__vo uint32_t CFGR;			//0x04
-	__vo uint32_t CIR;			//0x08
-	__vo uint32_t APB2RSTR;		//0x0C
-	__vo uint32_t APB1RSTR;		//0x10
-	__vo uint32_t AHBENR;		//0x14
-	__vo uint32_t APB2ENR;		//0x18
-	__vo uint32_t APB1ENR;		//0x1C
-	__vo uint32_t BDCR;			//0x20
-	__vo uint32_t CSR;			//0x24
+	__vo uint32 CR;			//0x00
+	__vo uint32 CFGR;			//0x04
+	__vo uint32 CIR;			//0x08
+	__vo uint32 APB2RSTR;		//0x0C
+	__vo uint32 APB1RSTR;		//0x10
+	__vo uint32 AHBENR;		//0x14
+	__vo uint32 APB2ENR;		//0x18
+	__vo uint32 APB1ENR;		//0x1C
+	__vo uint32 BDCR;			//0x20
+	__vo uint32 CSR;			//0x24
 } RCC_TypeDef;
 
 typedef struct
 {
-	__vo uint32_t ACR;			//0x00
-	__vo uint32_t KEYR;			//0x04
-	__vo uint32_t OPTKEYR;		//0x08
-	__vo uint32_t SR;			//0x0C
-	__vo uint32_t CR;			//0x10
-	__vo uint32_t AR;			//0x14
-	__vo uint32_t RESERVED;		//0x18
-	__vo uint32_t OBR;			//0x1C
-	__vo uint32_t WRPR;			//0x20
+	__vo uint32 ACR;			//0x00
+	__vo uint32 KEYR;			//0x04
+	__vo uint32 OPTKEYR;		//0x08
+	__vo uint32 SR;			//0x0C
+	__vo uint32 CR;			//0x10
+	__vo uint32 AR;			//0x14
+	__vo uint32 RESERVED;		//0x18
+	__vo uint32 OBR;			//0x1C
+	__vo uint32 WRPR;			//0x20
 } FLASH_TypeDef;
 
 typedef struct
 {
-	__vo uint32_t EVCR;			//0x00
-	__vo uint32_t MAPR;			//0x04
-	__vo uint32_t EXTIR[4];		//0x08...0x14
-	__vo uint32_t MAPR2;		//0x1C
+	__vo uint32 EVCR;			//0x00
+	__vo uint32 MAPR;			//0x04
+	__vo uint32 EXTIR[4];		//0x08...0x14
+	__vo uint32 MAPR2;		//0x1C
 } AFIO_TypeDef;
 
 #define RCC						((RCC_TypeDef*)		RCC_BASE)
@@ -111,15 +111,15 @@ typedef struct
 #define RCC_APB1ENR_CAN1EN			(1UL << 25)
 
 /* ---- FLASH ACR ---- */
-#define FLASH_ACR					(*(__vo uint32_t*)(0x40022000UL))
+#define FLASH_ACR					(*(__vo uint32*)(0x40022000UL))
 #define FLASH_ACR_LATENCY_Pos		0U
 #define FLASH_ACR_PRFTBE_Pos		4U
 
 /* IWDG registers */
-#define IWDG_KR						(*(__vo uint32_t*)(0x40003000UL))
-#define IWDG_PR						(*(__vo uint32_t*)(0x40003004UL))
-#define IWDG_RLR					(*(__vo uint32_t*)(0x40003008UL))
-#define IWDG_SR						(*(__vo uint32_t*)(0x4000300CUL))
+#define IWDG_KR						(*(__vo uint32*)(0x40003000UL))
+#define IWDG_PR						(*(__vo uint32*)(0x40003004UL))
+#define IWDG_RLR					(*(__vo uint32*)(0x40003008UL))
+#define IWDG_SR						(*(__vo uint32*)(0x4000300CUL))
 
 /* ---- AFIO MAPR helpers ---- */
 /* CAN_REMAP[14:13]: 10b → CAN RX=PB8, TX=PB9 */
@@ -142,13 +142,13 @@ typedef struct
 
 typedef struct
 {
-	__vo uint32_t CRL;
-	__vo uint32_t CRH;
-	__vo uint32_t IDR;
-	__vo uint32_t ODR;
-	__vo uint32_t BSRR;
-	__vo uint32_t BRR;
-	__vo uint32_t LCKR;
+	__vo uint32 CRL;
+	__vo uint32 CRH;
+	__vo uint32 IDR;
+	__vo uint32 ODR;
+	__vo uint32 BSRR;
+	__vo uint32 BRR;
+	__vo uint32 LCKR;
 } GPIO_TypeDef;
 
 #define GPIOA						((GPIO_TypeDef*)GPIOA_BASE)
@@ -175,10 +175,10 @@ typedef struct
 #define GPIO_CNF_AF_OD				(0x3U)
 
 /*Helper: Code 4-bit for 1 pin*/
-#define GPIO_CFG4(mode,cnf)			(((uint32_t)(cnf)<<2) | ((uint32_t)(mode ) & 0x3U))
+#define GPIO_CFG4(mode,cnf)			(((uint32)(cnf)<<2) | ((uint32)(mode ) & 0x3U))
 /*write on CRx*/
 #define GPIO_CRx_POS(pin)			(((pin)%8U) * 4U)
-#define GPIO_SET_CRL(cfg,pin)		do{ uint32_t v=GPIOA->CRL; (void)v;}while(0)
+#define GPIO_SET_CRL(cfg,pin)		do{ uint32 v=GPIOA->CRL; (void)v;}while(0)
 
 /* =========================================================
  *  EXTI
@@ -186,12 +186,12 @@ typedef struct
 #define EXTI_BASE					(APB2PERIPH_BASE +0x0400UL)
 typedef struct
 {
-	__vo uint32_t IMR;				//0x00
-	__vo uint32_t EMR;				//0x04
-	__vo uint32_t RTSR;				//0x08
-	__vo uint32_t FTSR;				//0x0C
-	__vo uint32_t SWIER;			//0x10
-	__vo uint32_t PR;				//0x14
+	__vo uint32 IMR;				//0x00
+	__vo uint32 EMR;				//0x04
+	__vo uint32 RTSR;				//0x08
+	__vo uint32 FTSR;				//0x0C
+	__vo uint32 SWIER;			//0x10
+	__vo uint32 PR;				//0x14
 } EXTI_TypeDef;
 
 /* =========================================================
@@ -204,26 +204,26 @@ typedef struct
 
 typedef struct
 {
-	__vo uint32_t CR1;		//0x00
-	__vo uint32_t CR2;		//0x04
-	__vo uint32_t SMCR;		//0x08
-	__vo uint32_t DIER;		//0x0C
-	__vo uint32_t SR;		//0x10
-	__vo uint32_t EGR;		//0x14
-	__vo uint32_t CCMR1;	//0x18
-	__vo uint32_t CCMR2;	//0x1C
-	__vo uint32_t CRER;		//0x20
-	__vo uint32_t CNT;		//0x24
-	__vo uint32_t PSC;		//0x28
-	__vo uint32_t ARR;		//0x2C
-	__vo uint32_t RCR;		//0x30
-	__vo uint32_t CCR1;		//0x34
-	__vo uint32_t CCR2;		//0x38
-	__vo uint32_t CCR3;		//0x3C
-	__vo uint32_t CCR4;		//0x40
-	__vo uint32_t BDTR;		//0x44
-	__vo uint32_t DCR;		//0x48
-	__vo uint32_t DMAR;		//0x4C
+	__vo uint32 CR1;		//0x00
+	__vo uint32 CR2;		//0x04
+	__vo uint32 SMCR;		//0x08
+	__vo uint32 DIER;		//0x0C
+	__vo uint32 SR;		//0x10
+	__vo uint32 EGR;		//0x14
+	__vo uint32 CCMR1;	//0x18
+	__vo uint32 CCMR2;	//0x1C
+	__vo uint32 CRER;		//0x20
+	__vo uint32 CNT;		//0x24
+	__vo uint32 PSC;		//0x28
+	__vo uint32 ARR;		//0x2C
+	__vo uint32 RCR;		//0x30
+	__vo uint32 CCR1;		//0x34
+	__vo uint32 CCR2;		//0x38
+	__vo uint32 CCR3;		//0x3C
+	__vo uint32 CCR4;		//0x40
+	__vo uint32 BDTR;		//0x44
+	__vo uint32 DCR;		//0x48
+	__vo uint32 DMAR;		//0x4C
 } TIM_TypeDef;
 
 #define TIM1				((TIM_TypeDef*) TIM1_BASE)
@@ -248,13 +248,13 @@ typedef struct
 
 typedef struct
 {
-	__vo uint32_t SR;
-	__vo uint32_t DR;
-	__vo uint32_t BRR;
-	__vo uint32_t CR1;
-	__vo uint32_t CR2;
-	__vo uint32_t CR3;
-	__vo uint32_t GTPR;
+	__vo uint32 SR;
+	__vo uint32 DR;
+	__vo uint32 BRR;
+	__vo uint32 CR1;
+	__vo uint32 CR2;
+	__vo uint32 CR3;
+	__vo uint32 GTPR;
 } USART_TypeDef;
 
 #define USART1					((USART_TypeDef*)USART1_BASE)
@@ -334,45 +334,45 @@ typedef struct
 
 typedef struct {
 	/* master*/
-	__vo uint32_t MCR;		//0x00
-	__vo uint32_t MSR;		//0x04
-	__vo uint32_t TSR;		//0x08
-	__vo uint32_t RF0R;		//0x0C
-	__vo uint32_t RF1R;		//0x10
-	__vo uint32_t IER;		//0x14
-	__vo uint32_t ESR;		//0x18
-	__vo uint32_t BTR;		//0x1C
-	uint32_t RESERVED0[88];	//0x20...0x17F
+	__vo uint32 MCR;		//0x00
+	__vo uint32 MSR;		//0x04
+	__vo uint32 TSR;		//0x08
+	__vo uint32 RF0R;		//0x0C
+	__vo uint32 RF1R;		//0x10
+	__vo uint32 IER;		//0x14
+	__vo uint32 ESR;		//0x18
+	__vo uint32 BTR;		//0x1C
+	uint32 RESERVED0[88];	//0x20...0x17F
 	/* Tx mailbox */
 	struct
 	{
-		__vo uint32_t	TIR;
-		__vo uint32_t	TDTR;
-		__vo uint32_t	TDLR;
-		__vo uint32_t	TDHR;
+		__vo uint32	TIR;
+		__vo uint32	TDTR;
+		__vo uint32	TDLR;
+		__vo uint32	TDHR;
 	} sTxMailBox[3];
 	/* Rx FIFOs */
 	struct
 	{
-		__vo uint32_t	RIR;
-		__vo uint32_t	RDTR;
-		__vo uint32_t	RDLR;
-		__vo uint32_t	RDHR;
+		__vo uint32	RIR;
+		__vo uint32	RDTR;
+		__vo uint32	RDLR;
+		__vo uint32	RDHR;
 	} sFIFOMailBox[2];
-	uint32_t RESERVED1[12];
-	__vo uint32_t	FMR;
-	__vo uint32_t	FM1R;
-	uint32_t RESERVED2;
-	__vo uint32_t	FS1R;
-	uint32_t RESERVED3;
-	__vo uint32_t	FFA1R;
-	uint32_t RESERVED4;
-	__vo uint32_t	FA1R;
-	uint32_t RESERVED5[8];
+	uint32 RESERVED1[12];
+	__vo uint32	FMR;
+	__vo uint32	FM1R;
+	uint32 RESERVED2;
+	__vo uint32	FS1R;
+	uint32 RESERVED3;
+	__vo uint32	FFA1R;
+	uint32 RESERVED4;
+	__vo uint32	FA1R;
+	uint32 RESERVED5[8];
 	struct
 	{
-		__vo uint32_t FR1;
-		__vo uint32_t FR2;
+		__vo uint32 FR1;
+		__vo uint32 FR2;
 	} sFilterRegister[14];
 } CAN_TypeDef;
 
@@ -395,12 +395,12 @@ typedef struct {
 /* =========================================================
  *  Core (SysTick/SCB/NVIC)
  * =======================================================*/
-#define SYST_CSR				(*(__vo uint32_t*)0xE000E010UL)
-#define SYST_RVR				(*(__vo uint32_t*)0xE000E014UL)
-#define SYST_CVR				(*(__vo uint32_t*)0xE000E018UL)
-#define SYST_CALIB				(*(__vo uint32_t*)0xE000E01CUL)
-#define SCB_AIRCR				(*(__vo uint32_t*)0xE000ED0CUL)
-#define NVIC_IPR_BASE			((__vo uint8_t*)0xE000E400UL)
+#define SYST_CSR				(*(__vo uint32*)0xE000E010UL)
+#define SYST_RVR				(*(__vo uint32*)0xE000E014UL)
+#define SYST_CVR				(*(__vo uint32*)0xE000E018UL)
+#define SYST_CALIB				(*(__vo uint32*)0xE000E01CUL)
+#define SCB_AIRCR				(*(__vo uint32*)0xE000ED0CUL)
+#define NVIC_IPR_BASE			((__vo uint8*)0xE000E400UL)
 
 
 #ifdef __cplusplus

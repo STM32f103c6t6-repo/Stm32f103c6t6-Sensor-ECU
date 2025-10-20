@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-#include <stdint.h>
+
 #include "Port_Types.h"
 
 /* ---------------------------------------------------------
@@ -21,7 +21,7 @@ extern "C" {
  *	- High nible: index port (A=0, B=1 , C=2 ,...)
  *	- Low nible: pin number  (0....15)
  * --------------------------------------------------------- */
-#define PORT_ENCODE_PIN(port_letter, pin_num)		(((uint8_t)((port_letter) - 'A') << 4 ) | ((uint8_t)(pin_num) & 0x0Fu))
+#define PORT_ENCODE_PIN(port_letter, pin_num)		((()((port_letter) - 'A') << 4 ) | (()(pin_num) & 0x0Fu))
 #define PORTA_PIN(n)		PORT_ENCODE_PIN('A', (n))
 #define PORTB_PIN(n)		PORT_ENCODE_PIN('B', (n))
 #define PORTC_PIN(n)		PORT_ENCODE_PIN('C', (n))
@@ -49,7 +49,7 @@ extern "C" {
 extern const Port_PinConfigType Port_configPins[];
 
 /*Number of element in array*/
-extern const uint32_t Port_ConfigPins_Count;
+extern const uint32 Port_ConfigPins_Count;
 
 /*Config AFIO remap*/
 extern const Port_AfioRemapConfigType Port_AfioRemapCfg;

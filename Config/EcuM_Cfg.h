@@ -12,8 +12,7 @@
 extern "C" {
 #endif
 
-#include<stdint.h>
-#include<stdbool.h>
+#include "Std_Types.h"
 
 /* =========================================================
  * Version Config
@@ -84,11 +83,11 @@ typedef enum
 
 /* Board order init */
 extern const EcuM_ModuleId EcuM_StartUpOrder[];
-extern const uint32_t	EcuM_StartUpOrder_Count;
+extern const uint32	EcuM_StartUpOrder_Count;
 
 /* Board order deinit */
 extern const EcuM_ModuleId EcuM_ShutDownOrder[];
-extern const uint32_t	EcuM_ShutDownOrder_Count;
+extern const uint32	EcuM_ShutDownOrder_Count;
 
 /* =========================================================
  * Timeout and startup monitoring
@@ -115,7 +114,7 @@ typedef enum
 	ECUM_SHUTDOWN_TARGET_SLEEP				//Enter Stop/Standby
 }EcuM_ShutdownTargetType;
 
-typedef uint32_t EcuM_WakeupSourceType;
+typedef uint32 EcuM_WakeupSourceType;
 #define ECU_WAKEUP_NONE			((EcuM_WakeupSourceType)0u)
 #define ECU_WAKEUP_CAN_TX		((EcuM_WakeupSourceType)(1u << 0))
 #define ECU_WAKEUP_TIMER		((EcuM_WakeupSourceType)(1u << 1))
@@ -142,10 +141,10 @@ typedef uint32_t EcuM_WakeupSourceType;
 typedef struct
 {
 	EcuM_RunModeType 		runModeSelected;
-	uint32_t				startupBudgetMs;
-	uint8_t					detEnable;
-	uint8_t					loggerEnable;
-	uint8_t					watchdogEnable;
+	uint32				startupBudgetMs;
+	uint8					detEnable;
+	uint8					loggerEnable;
+	uint8					watchdogEnable;
 } EcuM_InfoType;
 
 /* =========================================================
@@ -159,25 +158,25 @@ typedef struct
 
 	/*order init/deinit*/
 	const EcuM_ModuleId*		startOrder;
-	uint32_t					startOrderCount;
+	uint32					startOrderCount;
 	const EcuM_ModuleId*		stopOrder;
-	uint32_t					stopOrderCount;
+	uint32					stopOrderCount;
 
 	/* Timeout budgets */
-	uint32_t 					timeoutMcuInitMs;
-	uint32_t 					timeoutPortInitMs;
-	uint32_t 					timeoutUartInitMs;
-	uint32_t 					timeoutCanInitMs;
-	uint32_t 					timeoutComStackInitMs;
-	uint32_t 					timeoutRteMs;
-	uint32_t 					timeoutAppMs;
-	uint32_t 					timeoutStartupBudgetMs;
+	uint32 					timeoutMcuInitMs;
+	uint32 					timeoutPortInitMs;
+	uint32 					timeoutUartInitMs;
+	uint32 					timeoutCanInitMs;
+	uint32 					timeoutComStackInitMs;
+	uint32 					timeoutRteMs;
+	uint32 					timeoutAppMs;
+	uint32 					timeoutStartupBudgetMs;
 
 	/*Options*/
-	uint8_t						enableDet;
-	uint8_t						enableLogger;
-	uint8_t						enableWatchdog;
-	uint8_t						failsafeStopOnComLoss;
+	uint8						enableDet;
+	uint8						enableLogger;
+	uint8						enableWatchdog;
+	uint8						failsafeStopOnComLoss;
 
 } EcuM_ConfigType;
 
