@@ -203,7 +203,7 @@ static void prv_EnableIrq(Uart_ChannelType ch, bool enable)
 /*Start Tx if idle */
 static inline void prv_KickTxIfIdle(Uart_ChannelType ch, USART_TypeDef* regs)
 {
-	if((regs->CR1) & (1<< USART_CR1_TXEIE) == 0u)
+	if((regs->CR1 & (1U << USART_CR1_TXEIE)) == 0u)
 	{
 		if(prv_RbUsed(&s_handle[ch].txRb) > 0)
 		{
@@ -218,6 +218,7 @@ static inline void prv_KickTxIfIdle(Uart_ChannelType ch, USART_TypeDef* regs)
 Std_ReturnType Uart_Init(const Uart_ConfigType* cfg)
 {
 	if(cfg == NULL_PTR) { return E_NOT_OK;}
+	s_cfg = (Uart_ConfigType*)cfg;
 
 	for(uint32 i = 0 ; i < (uint32)UART_CH_COUNT; i++)
 	{
@@ -417,7 +418,7 @@ Std_ReturnType Uart_GetChar(Uart_ChannelType ch, uint8* outByte, uint32 timeoutM
 #if( UART_CFG_ENABLE_ASYNC_APIS == 1u)
 Std_ReturnType Uart_WriteAsync(Uart_ChannelType ch, const uint8* data, uint16 len)
 {
-	USART_TypeDef* regs = prv_GetRegs(UART_CH1);
+	USART_TypeDef* regs = prv_GetRegs(ch);
 	if( !regs || s_handle[ch].status != UART_INIT || data == NULL_PTR) return E_NOT_OK;
 
 	const Uart_ChannelConfigType* temp = (ch == UART_CH1)?(&s_cfg->usart1):NULL_PTR;
@@ -493,7 +494,7 @@ Std_ReturnType Uart_SetDirection(Uart_ChannelType ch, Uart_DirectionCfgType dir)
 		regs->CR1 &= (~((1<<USART_CR1_TXEIE)|(1<<USART_CR1_TCIE)));
 	}
 
-	cr1 &= (~((1<<USART_CR1_TE)|(1<<USART_CR1_RE)));
+	cr1 = (regs -> CR1 & ~((1<<USART_CR1_TE)|(1<<USART_CR1_RE)));
 	if(dir.txEnable) cr1 |= (1 << USART_CR1_TE);
 	if(dir.rxEnable) cr1 |= (1 << USART_CR1_RE);
 
@@ -553,7 +554,7 @@ void Uart_IrqHandler(Uart_ChannelType ch)
 {
 #if (UART_CFG_ENABLE_ASYNC_APIS == 1u)
 	USART_TypeDef* regs = prv_GetRegs(ch);
-	if( !regs || s_handle[ch].status != UART_INIT ) return E_NOT_OK;
+	if( !regs || s_handle[ch].status != UART_INIT ) return;
 	uint32 sr = regs->SR;
 
 	//Error
@@ -579,8 +580,8 @@ void Uart_IrqHandler(Uart_ChannelType ch)
 		{
 			regs->DR = b;
 #if (UART_CFG_ENABLE_STATS == 1)
-			s_handle[ch].stats.txBytes++;
-			s_handle[ch].stats.txIrqCount++;
+			s_handle[ch].stats.rxBytes++;
+			s_handle[ch].stats.rxIrqCount++;
 #endif
 		} else {
 			regs->CR1 &= ~USART_CR1_TXEIE;
@@ -591,11 +592,38 @@ void Uart_IrqHandler(Uart_ChannelType ch)
 	if((sr & (1 << USART_SR_TC)) && (regs->CR1 & (1<<USART_CR1_TCIE)))
 	{
 		regs -> CR1 &= ~(1 << USART_CR1_TXEIE);
-		regs -> CR1 |= (1 << USART_CR1_TCIE);
+		if(ch == UART_CH1 && s_cfg->usart1.cbs.onTxEmptyOrCplt)
+		{
+			s_cfg->usart1.cbs.onTxEmptyOrCplt(ch);
+		}
 	}
 
 #else
 	(void)ch;
+#endif
+}
+
+bool Uart_IsTxBusy(Uart_ChannelType ch)
+{
+	USART_TypeDef* regs = prv_GetRegs(ch);
+	if(!regs) return FALSE;
+
+	if(s_handle[ch].status != UART_INIT) return FALSE;
+
+#if(UART_CFG_ENABLE_ASYNC_APIS == 1u)
+	if(prv_RbUsed(&s_handle[ch].txRb) != 0u)
+	{
+		return TRUE;
+	}
+
+	if((regs->SR &(1U << USART_SR_TC)) == 0U)
+	{
+		return TRUE;
+	}
+
+	return FALSE;
+#else
+	return ((regs->SR &(1U << USART_SR_TC)) == 0U) ? TRUE : FALSE;
 #endif
 }
 

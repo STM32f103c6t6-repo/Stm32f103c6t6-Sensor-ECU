@@ -10,3 +10,5 @@
 !Config/**
 !MCAL/
 !MCAL/**
+!ECU_Abstraction/
+!ECU_Abstraction/**
