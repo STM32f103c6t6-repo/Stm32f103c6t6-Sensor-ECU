@@ -19,7 +19,7 @@ extern "C" {
 #include "LogLevels.h"
 #include "LogTags.h"
 
-#include "Det.h"
+//#include "Det.h"
 
 /* ==============================
  *        VERSION & IDs
@@ -95,7 +95,7 @@ extern "C" {
  * ============================== */
 #if(LOGGER_CFG_DEV_ERROR_DETECT == STD_ON)
 #define LOGGER_DET_REPORT(_api,_err) \
-	Det_ReportError(UARTIF_MODULE_ID,UARTIF_INSTANCE_ID,(_apiId),(_err));
+	Det_ReportError(LOGGER_MODULE_ID,LOGGER_INSTANCE_ID,(_api),(_err));
 #else
 #define LOGGER_DET_REPORT ((void)0)
 #endif
@@ -156,7 +156,7 @@ Std_ReturnType Logger_Printf(const char* fmt, ...);
 /*
  * Dump Buffer
  */
-Std_ReturnType Logger_HexDump(Logger_Level level, uint32 tagMask, const uint8* data, uint16 len);
+Std_ReturnType Logger_HexDump(Logger_LevelType level, uint32 tagMask, const uint8* data, uint16 len);
 
 #else // LOGGER_CFG_ENABLE == 0
 static inline void Logger_Init(const Logger_ConfigType* cfg) {(void)Cfg;}
