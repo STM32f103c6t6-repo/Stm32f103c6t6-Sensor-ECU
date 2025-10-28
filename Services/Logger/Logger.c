@@ -301,7 +301,7 @@ Std_ReturnType Logger_Printf(const char* fmt, ...)
 		return s_outWrite(crlf,2u);
 #else
 		const uint8 lf[1] = {'\n'};
-		return s_outWrite(crlf,1u);
+		return s_outWrite(lf,1u);
 #endif
 	}
 	return E_NOT_OK;
