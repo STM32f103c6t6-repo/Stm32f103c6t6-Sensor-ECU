@@ -237,14 +237,14 @@ typedef struct
 
 	/* SysTick */
 	Mcu_SysTickClksrcType	systickSrc;
-	uint32				systickHz;
+	uint32					systickHz;
 
 	/* NVIC default group */
 	Mcu_NvicPrigroupType	nvicPrigroup;
 
 	/* IWDG */
 	Mcu_IwdgConfigType		iwdg;
-} Mcu_Configtype;
+} Mcu_ConfigType;
 
 #ifdef __cplusplus
 }

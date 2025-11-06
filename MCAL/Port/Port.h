@@ -87,6 +87,11 @@ void Port_WritePin(Port_PinType Pin, Port_PinLevelType Level);
 */
 Port_PinLevelType Port_ReadPin(Port_PinType Pin);
 
+/* =========================================================
+ * 	 Global configuration
+ * =======================================================*/
+extern const Port_ConfigType Port_Config;
+
 #ifdef __cplusplus
 }
 #endif

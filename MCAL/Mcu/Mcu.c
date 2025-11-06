@@ -50,7 +50,7 @@ static inline bool prv_WaitFlagSet(__vo const uint32* reg, uint32 mask, uint32 l
 	return TRUE;
 }
 
-Std_ReturnType Mcu_Init(Mcu_ClockProfileType profile)
+Std_ReturnType Mcu_Init(Mcu_ConfigType *profile)
 {
 	(void) profile;
 
@@ -121,11 +121,6 @@ Std_ReturnType Mcu_Init(Mcu_ClockProfileType profile)
 
 	/* swap SYSCLK to PLL*/
 	return Mcu_DistributePllClock();
-}
-
-Std_ReturnType Mcu_InitLock(Mcu_ClockProfileType profile)
-{
-	return Mcu_Init(profile);
 }
 
 Std_ReturnType Mcu_DistributePllClock(void)

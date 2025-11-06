@@ -16,6 +16,7 @@ extern "C" {
 #include "Std_Types.h"
 #include "Uart.h"
 #include "Uart_Cfg.h"
+#include "Det.h"
 
 /* =====================================================================================================================
  *  Version & IDs
@@ -116,7 +117,7 @@ Std_ReturnType UartIf_ReadNonBlocking(uint8* BufPtr, uint16 BufSize, uint16* Out
 Std_ReturnType UartIf_RegisterRxIndication(UartIf_RxIndicationType RxCb); //Register Callback Rx
 Std_ReturnType UartIf_RegisterTxConfirmation(UartIf_TxConfirmationType TxCb); //Register Callback Tx
 bool UartIf_IsTxBusy(void); //check Tx busy
-void UartIfMainFunction(void);
+void UartIf_MainFunction(void);
 
 /* =====================================================================================================================
  *  OPTIONAL MULTI-CHANNEL
@@ -126,6 +127,11 @@ Std_ReturnType UartIf_ReadCh(Uart_ChannelType Channel, uint8* BufPtr, uint16 Buf
 Std_ReturnType UartIf_RegisterRxIndicationCh(Uart_ChannelType Channel,UartIf_RxIndicationType RxCb);
 Std_ReturnType UartIf_RegisterTxConfirmationCh(Uart_ChannelType Channel,UartIf_TxConfirmationType TxCb);
 bool UartIf_IsTxBusyCh(Uart_ChannelType Channel);
+
+/* =========================================================
+ * 	 Global configuration
+ * =======================================================*/
+extern const UartIf_ConfigType UartIf_Config;
 
 #ifdef __cplusplus
 }

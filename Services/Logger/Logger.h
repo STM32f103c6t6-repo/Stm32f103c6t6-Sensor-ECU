@@ -19,7 +19,7 @@ extern "C" {
 #include "LogLevels.h"
 #include "LogTags.h"
 
-//#include "Det.h"
+#include "Det.h"
 
 /* ==============================
  *        VERSION & IDs
@@ -199,6 +199,11 @@ static inline Std_ReturnType Logger_HexDump(Logger_LevelType lv, uint32 tg, cons
 #define LOG_WARN(TAG, FMT, ...) (void)Logger_Logf(LOG_LEVEL_WARN, (uint32)(TAG), FMT, ##__VA_ARGS__)
 #define LOG_INFO(TAG, FMT, ...) (void)Logger_Logf(LOG_LEVEL_INFO, (uint32)(TAG), FMT, ##__VA_ARGS__)
 #define LOG_DEBUG(TAG, FMT, ...) (void)Logger_Logf(LOG_LEVEL_DEBUG, (uint32)(TAG), FMT, ##__VA_ARGS__)
+
+/* =========================================================
+ * 	 Global configuration
+ * =======================================================*/
+extern const Logger_ConfigType Logger_Config;
 
 #ifdef __cplusplus
 }

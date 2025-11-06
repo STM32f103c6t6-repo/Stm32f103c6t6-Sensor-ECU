@@ -70,12 +70,7 @@ extern Mcu_ClockInfoType	s_clkInfo;
  * @return E_OK/E_NOT_OK
  */
 
-Std_ReturnType Mcu_Init(Mcu_ClockProfileType profile);
-
-/**
- * @brief  init Clock fllow profile
- */
-Std_ReturnType Mcu_InitClock(Mcu_ClockProfileType profile);
+Std_ReturnType Mcu_Init(Mcu_ConfigType *profile);
 
 /**
  * @brief  get state of PLL
@@ -147,6 +142,11 @@ void MCu_PllLockedHook(void);
 
 /* Call when timeout error init clock for write DET/Logger*/
 void Mcu_ClockInitErrorHook(void);
+
+/* =========================================================
+ * 	 Global configuration
+ * =======================================================*/
+extern const Mcu_ConfigType Mcu_Config;
 
 #ifdef __cplusplus
 }

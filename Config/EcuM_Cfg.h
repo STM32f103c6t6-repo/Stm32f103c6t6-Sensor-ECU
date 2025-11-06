@@ -134,55 +134,6 @@ typedef uint32 EcuM_WakeupSourceType;
 
 #endif
 
-/* =========================================================
- * Parameter runtime
- * - EcuM.c will write this information
- * =======================================================*/
-typedef struct
-{
-	EcuM_RunModeType 		runModeSelected;
-	uint32				startupBudgetMs;
-	uint8					detEnable;
-	uint8					loggerEnable;
-	uint8					watchdogEnable;
-} EcuM_InfoType;
-
-/* =========================================================
- * Config API (EcuM.c will call)
- * =======================================================*/
-typedef struct
-{
-	EcuM_RunModeType			defaultRunMode;
-	EcuM_ShutdownTargetType		defaultShutdownTarget;
-	EcuM_WakeupSourceType		defaultWakeupSources;
-
-	/*order init/deinit*/
-	const EcuM_ModuleId*		startOrder;
-	uint32					startOrderCount;
-	const EcuM_ModuleId*		stopOrder;
-	uint32					stopOrderCount;
-
-	/* Timeout budgets */
-	uint32 					timeoutMcuInitMs;
-	uint32 					timeoutPortInitMs;
-	uint32 					timeoutUartInitMs;
-	uint32 					timeoutCanInitMs;
-	uint32 					timeoutComStackInitMs;
-	uint32 					timeoutRteMs;
-	uint32 					timeoutAppMs;
-	uint32 					timeoutStartupBudgetMs;
-
-	/*Options*/
-	uint8						enableDet;
-	uint8						enableLogger;
-	uint8						enableWatchdog;
-	uint8						failsafeStopOnComLoss;
-
-} EcuM_ConfigType;
-
-/*config it in EcuM_Cfg.c*/
-extern const EcuM_ConfigType EcuM_Config;
-
 #ifdef __cplusplus
 }
 #endif

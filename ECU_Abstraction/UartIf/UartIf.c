@@ -8,6 +8,7 @@
 
 #include "UartIf.h"
 #include "Uart.h"
+#include <string.h>
 
 #ifndef UARTIF_MCAL_WRITE
 #define UARTIF_MCAL_WRITE(_ch, _buf, _len)			Uart_WriteAsync((_ch), (_buf), (_len))
@@ -59,7 +60,7 @@ static inline uint8 ring_is_full(const UartIf_RxRingType* rb)
 	return ((uint16)((rb->head + 1u) % UARTIF_RX_RING_SIZE) == rb->tail);
 }
 
-static inline uint8 ring_push(UartIf_RxRingType* rb, uint8 byte)
+static inline void ring_push(UartIf_RxRingType* rb, uint8 byte)
 {
 	uint16 next = (uint16)((rb->head +1u) % UARTIF_RX_RING_SIZE);
 	if(next == rb->tail)
@@ -301,13 +302,13 @@ bool UartIf_IsTxBusy(void)
 	return (bool) UARTIF_MCAL_ISTXBUSY(ch);
 }
 
-void UartIfMainFunction(void)
+void UartIf_MainFunction(void)
 {
 #if(UARTIF_DEV_ERROR_DETECT == STD_ON)
 	if(UartIf_Inited == FALSE)
 	{
 		UARTIF_DET_REPORT(UARTIF_API_ID_MAINFUNCTION,UARTIF_E_UNINIT);
-		return E_NOT_OK;
+		return ;
 	}
 #endif
 	if(UartIf_RxCb_Default != NULL_PTR)
@@ -362,7 +363,7 @@ Std_ReturnType UartIf_RegisterRxIndicationCh(Uart_ChannelType Channel,UartIf_RxI
 Std_ReturnType UartIf_RegisterTxConfirmationCh(Uart_ChannelType Channel,UartIf_TxConfirmationType TxCb)
 {
 	(void)Channel;
-	return UartIf_RegisterTxConfirmationCh(Channel, TxCb);
+	return UartIf_RegisterTxConfirmation(TxCb);
 }
 
 bool UartIf_IsTxBusyCh(Uart_ChannelType Channel)

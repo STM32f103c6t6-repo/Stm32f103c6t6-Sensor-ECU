@@ -85,7 +85,7 @@ bool Det_GetLastError(Det_ErrorEntryType* out)
 #else
 	(void)out;
 	return FALSE;
-#endif;
+#endif
 }
 
 uint16 Det_GetHistoryCount(void)

@@ -13,6 +13,8 @@
 extern "C"{
 #endif
 
+#include "Uart_Types.h"
+
 /* =====================================================================================================================
  *  Select instance  and transmission characteristics
  *  - Sensor ECU: use USART1 (PA9/PA10).

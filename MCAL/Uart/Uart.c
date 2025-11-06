@@ -24,6 +24,14 @@
 static Uart_ConfigType*	s_cfg	= NULL_PTR;
 static Uart_ChannelHandleType s_handle[UART_CH_COUNT];
 
+#if (UART_CFG_ENABLE_ASYNC_APIS == 1u)
+uint8  Uart1_TxBuf[UART1_CFG_TX_BUFFER_SIZE];
+uint16 Uart1_TxBufSize = UART1_CFG_TX_BUFFER_SIZE;
+
+uint8  Uart1_RxBuf[UART1_CFG_RX_BUFFER_SIZE];
+uint16 Uart1_RxBufSize = UART1_CFG_RX_BUFFER_SIZE;
+#endif
+
 /* ---------------------------------------------------------
  *	Mapping & utilities
  * --------------------------------------------------------- */
@@ -169,9 +177,10 @@ static void prv_EnableClock(Uart_ChannelType ch)
 {
 	switch(ch)
 	{
-	case UART_CH1: RCC->APB2ENR |= USART1EN; break;
-	case UART_CH2: RCC->APB1ENR |= USART2EN; break;
-	case UART_CH3: RCC->APB1ENR |= USART3EN; break;
+	case UART_CH1: RCC->APB2ENR |= USART1EN; return;
+	case UART_CH2: RCC->APB1ENR |= USART2EN; return;
+	case UART_CH3: RCC->APB1ENR |= USART3EN; return;
+	default: return;
 	}
 
 }
@@ -295,8 +304,8 @@ Std_ReturnType Uart_Init(const Uart_ConfigType* cfg)
 #if (UART_CFG_ENABLE_ASYNC_APIS == 1)
 		if(cfg->usart1.transMode == UART_XFER_INTERRUPT)
 		{
-			extern uint8 Uart1_TxBuf[]; uint16 Uart1_TxBufSize;
-			extern uint8 Uart1_RxBuf[]; uint16 Uart1_RxBufSize;
+//			extern uint8 Uart1_TxBuf[]; uint16 Uart1_TxBufSize;
+//			extern uint8 Uart1_RxBuf[]; uint16 Uart1_RxBufSize;
 			prv_RbInit(&s_handle[UART_CH1].txRb, Uart1_TxBuf, Uart1_TxBufSize);
 			prv_RbInit(&s_handle[UART_CH1].rxRb, Uart1_RxBuf, Uart1_RxBufSize);
 
@@ -382,7 +391,7 @@ Std_ReturnType Uart_Read(Uart_ChannelType ch, uint8* data, uint16 len, uint32 ti
 	for( uint16 i = 0; i < len; i++)
 	{
 		//wait RXNE
-		while( (regs -> SR) & (USART_SR_RXNE) == 0)
+		while( ((regs -> SR) & (USART_SR_RXNE)) == 0)
 		{
 			uint32 sr = regs -> SR;
 			if( sr & (USART_SR_ORE | USART_SR_FE | USART_SR_PE ) )
@@ -627,10 +636,4 @@ bool Uart_IsTxBusy(Uart_ChannelType ch)
 #endif
 }
 
-#if (UART_CFG_ENABLE_ASYNC_APIS == 1u)
-uint8  Uart1_TxBuf[UART1_CFG_TX_BUFFER_SIZE];
-uint16 Uart1_TxBufSize = UART1_CFG_TX_BUFFER_SIZE;
 
-uint8  Uart1_RxBuf[UART1_CFG_RX_BUFFER_SIZE];
-uint16 Uart1_RxBufSize = UART1_CFG_RX_BUFFER_SIZE;
-#endif

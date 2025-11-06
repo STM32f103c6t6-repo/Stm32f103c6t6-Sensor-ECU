@@ -139,9 +139,9 @@ typedef struct
 /* Config for each instance */
 typedef struct
 {
-	uint32 				baurate;
-	uint8 				wordlength;		// 8 or 9
-	uint8					stopBits;		//1 or 2
+	uint32 					baurate;
+	Uart_WordLengthType		wordlength;		// 8 or 9
+	Uart_StopBitsType		stopBits;		//1 or 2
 	Uart_ParityModeType		parity;
 	Uart_Flow_CtrlType 		flow;
 
@@ -149,15 +149,15 @@ typedef struct
 	Uart_TransferModeType	transMode;
 
 	uint8					TxEnable;		//enable Tx
-	uint8 				RxEnable;		//enable Rx
+	uint8 					RxEnable;		//enable Rx
 	uint8					useInterrupts;	// 1: IRQ, 0:polling
 	uint8					useDmaTx;		//1:DMA Tx
-	uint8 				useDmaRx;		//1: DMA Rx
+	uint8 					useDmaRx;		//1: DMA Rx
 
-	uint16 				txBufSize;		// ring buffer size
-	uint16 				rxBufSize;
-	uint16 				txTimeoutMs;	//timeout for API blocking
-	uint16 				rxTimeoutMs;
+	uint16 					txBufSize;		// ring buffer size
+	uint16 					rxBufSize;
+	uint16 					txTimeoutMs;	//timeout for API blocking
+	uint16 					rxTimeoutMs;
 
 	Uart_CallbacksType	cbs;
 } Uart_ChannelConfigType;
