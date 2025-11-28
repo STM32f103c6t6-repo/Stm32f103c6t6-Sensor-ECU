@@ -115,6 +115,7 @@ void UartIf_Init(const UartIf_ConfigType* CfgPtr)
 	if(CfgPtr == NULL_PTR)
 	{
 		UARTIF_DET_REPORT(UARTIF_API_ID_INIT, UARTIF_E_PARAM_POINTER);
+		return;
 	}
 #endif
 

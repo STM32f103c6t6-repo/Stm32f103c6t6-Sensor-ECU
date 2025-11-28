@@ -12,56 +12,56 @@
 
 // Config for Mcu
 const Mcu_ConfigType Mcu_Config = {
-		.pllSource		= MCU_CLOCK_SRC_HSE,
-		.pllMul			= MCU_PLL_MUL_9,
+		.pllSource		= MCU_CFG_PLL_SOURCE_HSE,
+		.pllMul			= MCU_CFG_PLL_MUL,
 
-		.ahbPresc		= MCU_AHB_DIV_1,
-		.apb1Presc		= MCU_AHB_DIV_2,
-		.apb2Presc		= MCU_AHB_DIV_1,
+		.ahbPresc		= MCU_CFG_AHB_PRESC,
+		.apb1Presc		= MCU_CFG_APB1_PRESC,
+		.apb2Presc		= MCU_CFG_APB2_PRESC,
 
-		.adcPresc		= 6u,
+		.adcPresc		= MCU_CFG_ADC_PRESC,
 
-		.flashLatency	= MCU_FLASH_LATENCY_2WS,
+		.flashLatency	= MCU_CFG_LATENCY,
 
-		.systickSrc		= MCU_SYSTICK_CLKSRC_HCLK,
-		.systickHz		= 1000u,
+		.systickSrc		= MCU_CFG_SYSTICK_SOURCE_HCLK,
+		.systickHz		= MCU_CFG_SYSTICK_HZ,
 
-		.nvicPrigroup	= MCU_NVIC_PRIGROUP_4_4,
-		.iwdg			= { .enable = 0u,
-							.prescaler = 64u,
-							.timeoutMs = 1000u
+		.nvicPrigroup	= MCU_CFG_NVIC_PRIGROUP,
+		.iwdg			= { .enable = MCU_CFG_IWDG_ENABLE,
+							.prescaler = MCU_CFG_IWDG_PRESC,
+							.timeoutMs = MCU_CFG_IWDFG_TIMEOUT
 							}
 };
 
 // Config for Uart
 const Uart_ConfigType Uart_Config = {
-		.useCh1				= 1u,
-		.useCh2				= 0u,
-		.useCh3				= 0u,
+		.useCh1				= UART_CFG_INSTANCE_USART1,
+		.useCh2				= UART_CFG_INSTANCE_USART2,
+		.useCh3				= UART_CFG_INSTANCE_USART3,
 
-		.logPort			= UART_CH1,
-		.diagPort			= UART_CH1,
+		.logPort			= UART_CFG_LOG_PORT,
+		.diagPort			= UART_CFG_DIAG_PORT,
 
 		.usart1				= {
-				.baurate 		= 115200u,
-				.wordlength		= UART_WORDLEN_8B,
-				.stopBits		= UART_STOPBITS_1,
-				.parity			= UART_PARITY_NONE,
-				.flow			= UART_FLOW_NONE,
+				.baurate 		= UART1_CFG_BAUDRATE,
+				.wordlength		= UART1_CFG_WORD_LENGTH,
+				.stopBits		= UART1_CFG_STOP_BITS,
+				.parity			= UART1_CFG_PARTY,
+				.flow			= UART1_CFG_HW_FLOW_CTRL,
 
-				.dir			= { .txEnable = 1u, .rxEnable = 1u},
-				.transMode		= UART_XFER_INTERRUPT,
+				.dir			= { .txEnable = UART1_CFG_DIR_TX_ENABLE, .rxEnable = UART1_CFG_DIR_RX_ENABLE},
+				.transMode		= UART1_CFG_TRANS_MODE,
 
-				.TxEnable		= 1u,
-				.RxEnable		= 1u,
-				.useInterrupts	= 1u,
-				.useDmaTx		= 0u,
-				.useDmaRx		= 0u,
+				.TxEnable		= UART1_CFG_MODE_TX_ENABLE,
+				.RxEnable		= UART1_CFG_MODE_RX_ENABLE,
+				.useInterrupts	= UART1_CFG_USE_INTERRUPTS,
+				.useDmaTx		= UART1_CFG_USE_DMA_TX,
+				.useDmaRx		= UART1_CFG_USE_DMA_RX,
 
-				.txBufSize	 	= 256u,
-				.rxBufSize		= 256u,
-				.txTimeoutMs	= 10u,
-				.rxTimeoutMs	= 10u,
+				.txBufSize	 	= UART1_CFG_TX_BUFFER_SIZE,
+				.rxBufSize		= UART1_CFG_RX_BUFFER_SIZE,
+				.txTimeoutMs	= UART1_CFG_TX_TIMEOUT_MS,
+				.rxTimeoutMs	= UART1_CFG_RX_TIMEOUT_MS,
 
 				.cbs			= NULL_PTR
 		},

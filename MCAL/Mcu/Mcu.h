@@ -70,7 +70,7 @@ extern Mcu_ClockInfoType	s_clkInfo;
  * @return E_OK/E_NOT_OK
  */
 
-Std_ReturnType Mcu_Init(Mcu_ConfigType *profile);
+Std_ReturnType Mcu_Init(const Mcu_ConfigType *profile);
 
 /**
  * @brief  get state of PLL

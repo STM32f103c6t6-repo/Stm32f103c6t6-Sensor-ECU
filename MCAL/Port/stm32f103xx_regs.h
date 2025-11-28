@@ -259,7 +259,7 @@ typedef struct
 
 #define USART1					((USART_TypeDef*)USART1_BASE)
 
-#define USART1EN				(1UL << 13)
+#define USART1EN				(1UL << 14)
 #define USART2EN				(1UL << 17)
 #define USART3EN				(1UL << 18)
 

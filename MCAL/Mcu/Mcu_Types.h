@@ -52,8 +52,8 @@ typedef struct
  * ===================================================================================================================*/
 typedef enum
 {
-	MCU_CLOCK_SRC_HSE = 0u,			// HSE into PLL
-	MCU_CLOCK_SRC_HSI_DIV2			// HSI/2 into PLL
+	MCU_CLOCK_SRC_HSI_DIV2 = 0u,	// HSI/2 into PLL
+	MCU_CLOCK_SRC_HSE				// HSE into PLL
 }Mcu_ClockSourceType;
 
 /* PLL state */
@@ -135,7 +135,7 @@ typedef enum
 /* SysTick : HCLK or HCLK/8 (follow hardware cortex-m3 */
 typedef enum
 {
-	MCU_SYSTICK_CLKSRC_HCLK_DIV8 =0u,
+	MCU_SYSTICK_CLKSRC_HCLK_DIV8 = 0u,
 	MCU_SYSTICK_CLKSRC_HCLK
 } Mcu_SysTickClksrcType;
 
@@ -226,8 +226,8 @@ typedef struct
 
 	/* prescaler bus*/
 	Mcu_AhbPrescalerType	ahbPresc;
-	Mcu_AhbPrescalerType	apb1Presc;
-	Mcu_AhbPrescalerType	apb2Presc;
+	Mcu_ApbPrescalerType	apb1Presc;
+	Mcu_ApbPrescalerType	apb2Presc;
 
 	/* ADC prescaler */
 	uint8					adcPresc;

@@ -25,9 +25,8 @@ extern "C" {
  * - APB2(PCLK2): 72MHz
  * - ADC: 12MHz
  * ===================================================================================================================*/
-#define MCU_CFG_HSE_ENABLE				(1u) //1: use HSE as PLL source, 0: use HSI
+#define MCU_CFG_HSE_ENABLE				(1u) //0: use HSE as PLL source, 1: use HSI
 #define MCU_CFG_HSE_FREQ_HZ				(8000000u) //Hz
-#define MCU_CFG_HSE_FREQ_HZ             (8000000u)    /* Hz */
 
 #define MCU_CFG_SYSCLK_FREQ_HZ			(72000000u) // Hz
 #define MCU_CFG_AHB_FREQ_HZ				(72000000u) // Hz
@@ -44,12 +43,12 @@ extern "C" {
  * - APB2	= AHB/APB2_PRESC
  * - ADC	= APB2/ADC_PRESC
  * ===================================================================================================================*/
-#define MCU_CFG_PLL_SOURCE_HSE			(1u) // 1: HSE, 0: HSI/2
+#define MCU_CFG_PLL_SOURCE_HSE			MCU_CLOCK_SRC_HSE // 1: HSE, 0: HSI/2
 #define MCU_CFG_PLL_MUL					(9u) // 8MHZ*9 = 72MHz
 
-#define MCU_CFG_AHB_PRESC				(1u) // 1,2,4,8,16,64,128,256,512
-#define MCU_CFG_APB1_PRESC				(1u) //1 or 2...16
-#define MCU_CFG_APB2_PRESC				(1u)
+#define MCU_CFG_AHB_PRESC				MCU_AHB_DIV_1 // 1,2,4,8,16,64,128,256,512
+#define MCU_CFG_APB1_PRESC				MCU_APB_DIV_1 //1 or 2...16
+#define MCU_CFG_APB2_PRESC				MCU_APB_DIV_1
 #define MCU_CFG_ADC_PRESC				(6u)
 
 /* =====================================================================================================================
@@ -57,14 +56,14 @@ extern "C" {
  * create 1ms for scheduler/timeout
  * ===================================================================================================================*/
 #define MCU_CFG_SYSTICK_HZ				(1000u) // 1000Hz -> 1ms
-#define MCU_CFG_SYSTICK_SOURCE_HCLK		(1u)	// 1: HCLK, 0: HCLK/8
+#define MCU_CFG_SYSTICK_SOURCE_HCLK		MCU_SYSTICK_CLKSRC_HCLK	// 1: HCLK, 0: HCLK/8
 
 /* =====================================================================================================================
  * Priority of interrupt
  * - Group: 2-bit preemption, 2-bit subpriority
  * - Priority: ICU higher UART log.
  * ===================================================================================================================*/
-#define MCU_CFG_NVIC_PRIGROUP			(0x05u)	//NVIC_PriorityGroup_2
+#define MCU_CFG_NVIC_PRIGROUP			MCU_NVIC_PRIGROUP_5_3	//NVIC_PriorityGroup_2
 
 #define MCU_PRIO_TIM2_ICU_PREEMPT		(1u)
 #define MCU_PRIO_TIM2_ICU_SUB			(0u)
@@ -87,6 +86,11 @@ extern "C" {
 #define MCU_CFG_IWDG_ENABLE				(0u)	// 1: enable, 0: disable
 #define MCU_CFG_IWDG_PRESC				(64u)	// Prescaler: 4...256
 #define MCU_CFG_IWDFG_TIMEOUT			(1000u)	// Timeout (ms)
+
+/* =====================================================================================================================
+ * Other config
+ * ===================================================================================================================*/
+#define MCU_CFG_LATENCY					MCU_FLASH_LATENCY_2WS	// Timeout (ms)
 
 /* =====================================================================================================================
  * Check config compile-time

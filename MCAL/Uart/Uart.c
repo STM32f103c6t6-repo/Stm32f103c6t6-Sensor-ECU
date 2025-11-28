@@ -231,7 +231,7 @@ Std_ReturnType Uart_Init(const Uart_ConfigType* cfg)
 
 	for(uint32 i = 0 ; i < (uint32)UART_CH_COUNT; i++)
 	{
-		s_handle[i].stats = (Uart_StatsType) {0};
+		s_handle[i].status = UART_UNINIT;
 #if(UART_CFG_ENABLE_STATS == 1u)
 		s_handle[i].stats = (Uart_StatsType){0};
 #endif
@@ -270,7 +270,7 @@ Std_ReturnType Uart_Init(const Uart_ConfigType* cfg)
 		/*Parity*/
 		if(cfg->usart1.parity != UART_PARITY_NONE )
 		{
-			cr1 |= USART_CR1_PCE;
+			cr1 |= (1 << USART_CR1_PCE);
 
 			s_handle[UART_CH1].parityEnable = 1;
 			if(cfg->usart1.parity == UART_PARITY_ODD)
@@ -366,13 +366,14 @@ Std_ReturnType Uart_Write(Uart_ChannelType ch, const uint8* data, uint16 len, ui
 			if (prv_GetTickMs() - t0 >= timeoutMs) return E_NOT_OK;
 		}
 
-		regs->DR = data[i];
+		regs->DR = (uint8)data[i];
 #if (UART_CFG_ENABLE_STATS == 1)
 		s_handle[ch].stats.txBytes++;
 #endif
 	}
 
 	// wait TC complete
+	t0 = prv_GetTickMs();
 	while( ((regs->SR) & (1 << USART_SR_TC)) == 0u )
 	{
 		if(prv_GetTickMs() - t0 >= timeoutMs) return E_NOT_OK;
@@ -625,7 +626,7 @@ bool Uart_IsTxBusy(Uart_ChannelType ch)
 		return TRUE;
 	}
 
-	if((regs->SR &(1U << USART_SR_TC)) == 0U)
+	if((regs->SR & (1U << USART_SR_TC)) == 0U)
 	{
 		return TRUE;
 	}

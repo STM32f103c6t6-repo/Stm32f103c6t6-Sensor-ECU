@@ -22,19 +22,24 @@ extern "C"{
  * ===================================================================================================================*/
 #define UART_CFG_INSTANCE_USART1			(1u) 	/* 1: enable USART1*/
 #define UART_CFG_INSTANCE_USART2			(0u)
+#define UART_CFG_INSTANCE_USART3			(0u)
 
 /* =====================================================================================================================
  *  Parameter config for port log
  * ===================================================================================================================*/
-#define UART1_CFG_BAUDRATE					(115200)	// bps
-#define UART1_CFG_WORD_LENGTH				(8u)		// 8 or 9
-#define UART1_CFG_STOP_BITS					(1u)		// 1 or 2
-#define UART1_CFG_PARITY_ENABLE				(0u)		// 0: no parity, 1: enable
-#define UART1_CFG_PARITY_ODD				(0u)		// 0: even, 1: odd
-#define UART1_CFG_HW_FLOW_CTRL				(0u)		// 0: None, 1: RTS/CTS
-#define UART1_CFG_OVERSAMPLING_16			(1u)		// 1:OS16, 0: OS8
+#define UART1_CFG_BAUDRATE					(115200)			// bps
+#define UART1_CFG_WORD_LENGTH				UART_WORDLEN_8B		// 8 or 9
+#define UART1_CFG_STOP_BITS					UART_STOPBITS_1		// 1 or 2
+#define UART1_CFG_PARITY_ENABLE				(0u)				// 0: no parity, 1: enable
+#define UART1_CFG_PARITY_ODD				(0u)				// 0: even, 1: odd
+#define UART1_CFG_PARTY						UART_PARITY_NONE
+#define UART1_CFG_HW_FLOW_CTRL				UART_FLOW_NONE		// 0: None, 1: RTS/CTS
+#define UART1_CFG_OVERSAMPLING_16			(1u)				// 1:OS16, 0: OS8
+#define UART1_CFG_TRANS_MODE				UART_XFER_INTERRUPT
 
 /*Config Mode activity */
+#define UART1_CFG_DIR_TX_ENABLE				(1u)
+#define UART1_CFG_DIR_RX_ENABLE				(1u)
 #define UART1_CFG_MODE_TX_ENABLE			(1u)
 #define UART1_CFG_MODE_RX_ENABLE			(1u)
 #define UART1_CFG_USE_INTERRUPTS			(1u)
@@ -55,8 +60,8 @@ extern "C"{
  * Mapping logger & diagnostic channel (optional)
  * - Allows UartIf/Logger to know which port to use as "LOG_PORT"
  * ===================================================================================================================*/
-#define UART_CFG_LOG_PORT					(1u)		//1:USART1, 2:USART2
-#define UART_CFG_DIAG_PORT					(1u)
+#define UART_CFG_LOG_PORT					UART_CH1		//1:USART1, 2:USART2
+#define UART_CFG_DIAG_PORT					UART_CH1
 
 /* =====================================================================================================================
  * Data structure config runtime
@@ -67,15 +72,15 @@ extern "C"{
 /* =====================================================================================================================
  * Check compile-time
  * ===================================================================================================================*/
-#if (UART_CFG_INSTANCE_USART1 == 0u) && (UART_CFG_LOG_PORT == 1u)
+#if (UART_CFG_INSTANCE_USART1 == 0u) && (UART_CFG_LOG_PORT == UART_CH1)
 #error "UART_CFG_INSTANCE_USART1 = 0 but UART_CFG_LOG_PORT = USART1 -> Enable USART1."
 #endif
 
-#if (UART1_CFG_WORD_LENGTH != 8u) && (UART1_CFG_WORD_LENGTH != 9u)
+#if (UART1_CFG_WORD_LENGTH != UART_WORDLEN_8B) && (UART1_CFG_WORD_LENGTH != UART_WORDLEN_9B)
 #error "UART1_CFG_WORD_LENGTH always has value 8 or 9."
 #endif
 
-#if (UART1_CFG_STOP_BITS != 1u) && (UART1_CFG_STOP_BITS != 2u)
+#if (UART1_CFG_STOP_BITS != UART_STOPBITS_1) && (UART1_CFG_STOP_BITS != UART_STOPBITS_2)
 #error "UART1_CFG_STOP_BITS always has value 1 or 2."
 #endif
 

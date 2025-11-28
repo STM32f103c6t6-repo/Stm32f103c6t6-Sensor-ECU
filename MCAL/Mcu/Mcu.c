@@ -11,6 +11,7 @@
 #include "Mcu.h"
 #include "Mcu_Cfg.h"
 #include "stm32f103xx_regs.h"
+#include "Mcu_Types.h"
 
 /*SYST_CSR bits*/
 #define SYST_CSR_ENABLE_Pos			0U
@@ -34,7 +35,7 @@ static Mcu_StatusType		s_mcuStatus		= MCU_UNINIT;
 static Mcu_PllStatusType	s_pllStatus		= MCU_PLL_STATUS_UNDEFINED;
 Mcu_ClockInfoType	s_clkInfo		= {0};
 
-static void prv_FlashSetLatencyAndPreFetch(uint32 sysclk_hz);
+static void prv_FlashSetLatencyAndPreFetch(Mcu_FlashLatencyType Flash_Latency);
 static uint32 prv_EncodeAhbPrescaler(uint32 div);
 static uint32 prv_EncodeApbPrescaler(uint32 div);
 static uint32 prv_EncodeAdcPrescaler(uint32 div);
@@ -50,12 +51,12 @@ static inline bool prv_WaitFlagSet(__vo const uint32* reg, uint32 mask, uint32 l
 	return TRUE;
 }
 
-Std_ReturnType Mcu_Init(Mcu_ConfigType *profile)
+Std_ReturnType Mcu_Init(const Mcu_ConfigType *profile)
 {
-	(void) profile;
+//	(void) profile;
 
 	/* Enable HSE*/
-#if (MCU_CFG_PLL_SOURCE_HSE == 1u)
+#if (MCU_CFG_PLL_SOURCE_HSE == MCU_CLOCK_SRC_HSE)
 	/* Enable HSE & AFIO clock */
 	RCC -> CR |= (1UL <<16); //HSEon
 	if(!prv_WaitFlagSet(&RCC->CR, (1UL<<17), 1000000U)) //HSERDY
@@ -75,31 +76,31 @@ Std_ReturnType Mcu_Init(Mcu_ConfigType *profile)
 	}
 #endif
 	/* config Flash latency & Prefetch follow target SYSCLK */
-	prv_FlashSetLatencyAndPreFetch(MCU_CFG_SYSCLK_FREQ_HZ);
+	prv_FlashSetLatencyAndPreFetch(profile->flashLatency);
 
 	/* config prescaler bus */
 	uint32 cfgr = RCC->CFGR;
 
 	/* AHB prescaler (HPRE) - bits 7:4 */
 	cfgr &= ~(0xFUL << 4);
-	cfgr |= (prv_EncodeAhbPrescaler(MCU_CFG_AHB_PRESC) << 4);
+	cfgr |= (prv_EncodeAhbPrescaler(profile->ahbPresc) << 4);
 
 	/* APB1 prescaler (PPRE1) - bits 10:8 */
 	cfgr &= ~(0x7UL << 8);
-	cfgr |= (prv_EncodeApbPrescaler(MCU_CFG_APB1_PRESC) << 8);
+	cfgr |= (prv_EncodeApbPrescaler(profile->apb1Presc) << 8);
 
 	/* APB2 prescaler (PPRE2) - bits 13:11 */
 	cfgr &= ~(0x7UL << 11);
-	cfgr |= (prv_EncodeApbPrescaler(MCU_CFG_APB2_PRESC) << 11);
+	cfgr |= (prv_EncodeApbPrescaler(profile->apb2Presc) << 11);
 
 	/* ADC prescaler (ADCPRE) - bits 15:14 */
 	cfgr &= ~(0x3UL << 14);
-	cfgr |= (prv_EncodeAdcPrescaler(MCU_CFG_ADC_PRESC) << 4);
+	cfgr |= (prv_EncodeAdcPrescaler(profile->adcPresc) << 14);
 
 	/* Config PLL source & multiplier */
-#if (MCU_CFG_PLL_SOURCE_HSE == 1u)
+#if (MCU_CFG_PLL_SOURCE_HSE == MCU_CLOCK_SRC_HSE)
 	cfgr |= (1UL << 16);		// PLLSRC = HSE
-	cfgr &= (1UL << 17);		// PLLXTPRE = HSE not devided
+	cfgr &= ~(1UL << 17);		// PLLXTPRE = HSE not devided
 #else
 	cfgr &= ~(1UL << 16);
 #endif
@@ -144,7 +145,7 @@ Std_ReturnType Mcu_DistributePllClock(void)
 			s_clkInfo.pclk1_hz		= MCU_CFG_APB1_FREQ_HZ;
 			s_clkInfo.pclk2_hz		= MCU_CFG_APB2_FREQ_HZ;
 			s_clkInfo.adcclk_hz		= MCU_CFG_ADC_FREQ_HZ;
-			s_clkInfo.sysclk_hz		= MCU_CFG_SYSTICK_HZ;
+			s_clkInfo.systick_hz	= MCU_CFG_SYSTICK_HZ;
 
 			s_mcuStatus = MCU_INIT;
 			return E_OK;
@@ -289,16 +290,12 @@ __attribute__((weak)) void MCu_PllLockedHook(void) {}
 __attribute__((weak)) void Mcu_ClockInitErrorHook(void) {}
 
 /* Local helpers impl */
-static void prv_FlashSetLatencyAndPreFetch(uint32 sysclk_hz)
+static void prv_FlashSetLatencyAndPreFetch(Mcu_FlashLatencyType Flash_Latency)
 {
-	uint32 lat = 0U;
-	if(sysclk_hz <= 24000000UL)			{ lat = 0U; }
-	else if(sysclk_hz <= 48000000UL)	{ lat = 1U; }
-	else 								{ lat = 2U; }
 
 	uint32 acr = FLASH_ACR;
 	acr &= ~(0x7UL << FLASH_ACR_LATENCY_Pos);
-	acr |= (lat << FLASH_ACR_LATENCY_Pos);
+	acr |= (Flash_Latency << FLASH_ACR_LATENCY_Pos);
 	acr |= (1UL << FLASH_ACR_PRFTBE_Pos); //enable prefetch
 	FLASH_ACR = acr;
 }
