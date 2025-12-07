@@ -194,6 +194,7 @@ Logger_TagMaskType Logger_GetEnableTags(void)
 
 Std_ReturnType Logger_Write(const uint8* data, uint16 len)
 {
+
 	LOGGER_DET_CHK_INIT(LOGGER_API_ID_WRITE);
 	if((data == NULL_PTR) || (len == 0u))
 	{
@@ -203,6 +204,7 @@ Std_ReturnType Logger_Write(const uint8* data, uint16 len)
 		return E_NOT_OK;
 	}
 	if(s_outWrite == NULL_PTR) return E_NOT_OK;
+
 	return s_outWrite(data,len);
 }
 
@@ -222,7 +224,6 @@ Std_ReturnType Logger_WriteLine(const char* cstr)
 Std_ReturnType Logger_Logf(Logger_LevelType level, uint32 tagMask, const char* fmt,...)
 {
 	LOGGER_DET_CHK_INIT(LOGGER_API_ID_LOGF);
-
 	// Filter by level
 	if(level == LOG_LEVEL_OFF || level > LOG_LEVEL_DEBUG) return E_OK;
 	if(level > s_level) return E_OK;
@@ -246,14 +247,14 @@ Std_ReturnType Logger_Logf(Logger_LevelType level, uint32 tagMask, const char* f
 	va_start(ap,fmt);
 	int m = vsniprintf(msg,sizeof(msg),fmt,ap);
 	va_end(ap);
-
 	if(m < 0) return E_NOT_OK;
 	uint16 mLen = (uint16)((m >= (int)sizeof(msg)) ? (sizeof(msg)-1u) : (uint16)m);
 
 	// Send: prefix + message + newline
 	if(pLen > 0u && s_outWrite != NULL_PTR)
 	{
-		if(s_outWrite((const uint8*)prefix,pLen) != E_OK)  return E_NOT_OK;
+		if(s_outWrite((const uint8*)prefix,pLen) != E_OK) return E_NOT_OK;
+
 	}
 
 	if(s_outWriteLine != NULL_PTR)

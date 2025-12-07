@@ -15,8 +15,8 @@
 
 /*SYST_CSR bits*/
 #define SYST_CSR_ENABLE_Pos			0U
-#define SYST_CSR_TICKINT_Pos		0U
-#define SYST_CSR_CLKSOURCE_Pos		0U
+#define SYST_CSR_TICKINT_Pos		1U
+#define SYST_CSR_CLKSOURCE_Pos		2U
 
 /* SCB AIRRCR (priority grouping & system reset )*/
 #define SCB_AIRCR_VECTKEY_Pos		16U
@@ -68,7 +68,7 @@ Std_ReturnType Mcu_Init(const Mcu_ConfigType *profile)
 #else
 	/*confirm HSI enable*/
 	RCC -> CR |= (1UL <<0); //HSIon
-	if(!prv_WaitFlagSet(&RCC->CR, (1UL<<1), 1000000U)) //HSERDY
+	if(!prv_WaitFlagSet(&RCC->CR, (1UL<<1), 1000000U)) //HSIRDY
 	{
 		s_pllStatus	= MCU_PLL_STATUS_UNDEFINED;
 		Mcu_ClockInitErrorHook();
@@ -163,11 +163,7 @@ Mcu_PllStatusType Mcu_GetPllStatus(void)
 Std_ReturnType Mcu_SetNvicPriorityGrouping(uint32 prigroup_value)
 {
 	/*Write AIRCR with VECTKEY*/
-	uint32 reg = SCB_AIRCR;
-	reg &= ~(0x7UL << SCB_AIRCR_PRIGROUP_Pos);
-	reg = (reg & ~(0xFFFFUL << 16)) | SCB_AIRCR_VECTKEY;
-	reg |= ((prigroup_value & 0x7UL) << SCB_AIRCR_PRIGROUP_Pos);
-	SCB_AIRCR = reg;
+	SCB_AIRCR = SCB_AIRCR_VECTKEY | (prigroup_value << SCB_AIRCR_PRIGROUP_Pos) | (SCB_AIRCR & (0x700));
 	return E_OK;
 }
 
@@ -180,7 +176,7 @@ Std_ReturnType Mcu_SetIrqPriority(uint32 irqn, uint8 preemptPrio, uint8 subPrio)
 	return E_OK;
 }
 
-Std_ReturnType Mcu_SetSysTickHz(uint32 tick_hz)
+Std_ReturnType Mcu_Set_SysTickHZ(uint32 tick_hz)
 {
 	uint32 hclk 	= (MCU_CFG_SYSTICK_SOURCE_HCLK == 1u) ? MCU_CFG_AHB_FREQ_HZ : (MCU_CFG_AHB_FREQ_HZ / 8u);
 	uint32 reload = (hclk / tick_hz) -1U;
