@@ -37,7 +37,7 @@ extern "C" {
  *  DEVELOPMENT SWITCHES
  * ===================================================================================================================*/
 #ifndef UARTIF_DEV_ERROR_DETECT
-#define UARTIF_DEV_ERROR_DETECT				STD_ON
+#define UARTIF_DEV_ERROR_DETECT				STD_OFF
 #endif
 
 #ifndef UARTIF_DEFAULT_CRLF

@@ -8,6 +8,7 @@
 
 #include "UartIf.h"
 #include "Uart.h"
+#include "Mcu.h"
 #include <string.h>
 
 #ifndef UARTIF_MCAL_WRITE
@@ -179,7 +180,6 @@ Std_ReturnType UartIf_Write(const uint8* DataPtr, uint16 Length)
 	}
 #endif
 	const Uart_ChannelType ch = UartIf_CfgPtr->Channels[UartIf_CfgPtr->DefaultChannelIndex].ChannelId;
-
 	if(UARTIF_MCAL_ISTXBUSY(ch)){
 #if (UARTIF_DEV_ERROR_DETECT == STD_ON)
 		UARTIF_DET_REPORT(UARTIF_API_ID_WRITE, UARTIF_E_BUSY);
@@ -210,13 +210,15 @@ Std_ReturnType UartIf_WriteLine(const char* CStr)
 #endif
 	Std_ReturnType ret = UartIf_Write((const uint8*) CStr, (uint16)strlen(CStr));
 	if(ret != E_OK) return ret;
+	DelayMs(TIME_DELAY_FOR_IQR_HANDER);
 #if (UARTIF_DEFAULT_CRLF == 1)
-	static const uint8 crlf[2] = {'r','n'};
+	static const uint8 crlf[2] = {'\r','\n'};
 	ret = UartIf_Write(crlf,2u);
 #else
 	static const uint8 lf[1] = {'\n'};
 	ret = UartIf_Write(lf,1u);
 #endif
+	DelayMs(TIME_DELAY_FOR_IQR_HANDER);
 	return ret;
 }
 

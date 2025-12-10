@@ -52,7 +52,7 @@ extern "C"{
  * - Timeout for send/recv in ms (if driver supports).
  * ===================================================================================================================*/
 #define UART1_CFG_TX_BUFFER_SIZE			(256u)		//Bytes
-#define UART1_CFG_RX_BUFFER_SIZE			(128u)		//Bytes
+#define UART1_CFG_RX_BUFFER_SIZE			(256u)		//Bytes
 #define UART1_CFG_TX_TIMEOUT_MS				(20u)		// Using for API Blocking
 #define UART1_CFG_RX_TIMEOUT_MS				(20u)
 

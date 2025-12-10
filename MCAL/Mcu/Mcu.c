@@ -349,5 +349,14 @@ static uint32 prv_EncodePllMul(uint32 mul)
 	return (mul - 2U);
 }
 
+void DelayMs(uint32 ms)
+{
+    volatile uint32 count;
+    while(ms--)
+    {
+        count = 3600;
+        while(count--) {
 
-
+        }
+    }
+}

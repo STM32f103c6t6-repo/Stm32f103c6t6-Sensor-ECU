@@ -148,6 +148,9 @@ void Mcu_ClockInitErrorHook(void);
  * =======================================================*/
 extern const Mcu_ConfigType Mcu_Config;
 
+#define TIME_DELAY_FOR_IQR_HANDER 		10
+void DelayMs(uint32 ms);
+
 #ifdef __cplusplus
 }
 #endif

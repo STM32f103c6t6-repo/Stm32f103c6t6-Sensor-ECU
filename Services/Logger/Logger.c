@@ -8,6 +8,7 @@
 
 #include "Logger.h"
 #include "Logger_Cfg.h"
+#include "Mcu.h"
 
 #if (LOGGER_CFG_ENABLE == 1)
 
@@ -254,14 +255,14 @@ Std_ReturnType Logger_Logf(Logger_LevelType level, uint32 tagMask, const char* f
 	if(pLen > 0u && s_outWrite != NULL_PTR)
 	{
 		if(s_outWrite((const uint8*)prefix,pLen) != E_OK) return E_NOT_OK;
-
 	}
-
+	DelayMs(TIME_DELAY_FOR_IQR_HANDER);
 	if(s_outWriteLine != NULL_PTR)
 	{
 		return s_outWriteLine(msg);
 	} else if(s_outWrite != NULL_PTR){
 		if(s_outWrite((const uint8*)msg,mLen) != E_OK)  return E_NOT_OK;
+		DelayMs(TIME_DELAY_FOR_IQR_HANDER);
 #if (LOGGER_CFG_CRLF_STYLE == 1)
 		const uint8 crlf[2] = {'\r','\n'};
 		return s_outWrite(crlf,2u);

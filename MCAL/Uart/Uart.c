@@ -125,10 +125,9 @@ static inline bool prv_RbPop(Uart_RingBufferType* rb, uint8* out)
 	if( rb->tail == rb->head) return FALSE;
 
 	*out = rb->buf[rb->tail];
-	uint16 next = rb->tail + 1U;
-	if(next == rb->size) next = 0U;
+	uint16 next = (uint16)(rb->tail + 1U);
+	rb->tail =  (next == rb->size) ? 0U : next;
 
-	rb->tail = next;
 	return TRUE;
 }
 
@@ -393,7 +392,7 @@ Std_ReturnType Uart_Read(Uart_ChannelType ch, uint8* data, uint16 len, uint32 ti
 	for( uint16 i = 0; i < len; i++)
 	{
 		//wait RXNE
-		while( ((regs -> SR) & (USART_SR_RXNE)) == 0)
+		while( ((regs -> SR) & ( 1 << USART_SR_RXNE)) == 0)
 		{
 			uint32 sr = regs -> SR;
 			if( sr & ((1 << USART_SR_ORE) | (1 << USART_SR_FE )| (1<<USART_SR_PE) ) )
@@ -564,41 +563,46 @@ void Uart_IrqHandler(Uart_ChannelType ch)
 #if (UART_CFG_ENABLE_ASYNC_APIS == 1u)
 	USART_TypeDef* regs = prv_GetRegs(ch);
 	if( !regs || s_handle[ch].status != UART_INIT ) return;
-	uint32 sr = regs->SR;
 	//Error
-	if(sr & ((1 << USART_SR_ORE) | (1 << USART_SR_PE) | (1 << USART_SR_FE)))prv_ClearAndReportError(ch, regs, sr);
-	//RXNE
-	if(sr & (1 << USART_SR_RXNE))
+	if(regs->SR & ((1 << USART_SR_ORE) | (1 << USART_SR_PE) | (1 << USART_SR_FE)))prv_ClearAndReportError(ch, regs, regs->SR);
+	//RXNEeie
+	if(regs->SR & (1 << USART_SR_RXNE))
 	{
 		uint8 b = (uint8)(regs->DR & 0xFFu);
 		(void)prv_RbPush(&s_handle[ch].rxRb, b);
 #if (UART_CFG_ENABLE_STATS ==1)
-		s_handle[ch].stats.txBytes++;
-		s_handle[ch].stats.txIrqCount++;
+		s_handle[ch].stats.rxBytes++;
+		s_handle[ch].stats.rxIrqCount++;
 #endif
 		if(ch == UART_CH1 && s_cfg->usart1.cbs.onRxChar) s_cfg->usart1.cbs.onRxChar(ch,b);
 	}
 
 	//TXE
-	if((sr & (1 << USART_SR_TXE)) && (regs -> CR1 & (1 << USART_CR1_TXEIE)) )
+	if((regs->SR & (1 << USART_SR_TXE)) /*&& (regs -> CR1 & (1 << USART_CR1_TXEIE))*/ )
 	{
 		uint8 b;
 		if(prv_RbPop(&s_handle[ch].txRb, &b))
 		{
 			regs->DR = b;
 #if (UART_CFG_ENABLE_STATS == 1)
-			s_handle[ch].stats.rxBytes++;
-			s_handle[ch].stats.rxIrqCount++;
+			s_handle[ch].stats.txBytes++;
+			s_handle[ch].stats.txIrqCount++;
 #endif
 		} else {
-			regs->CR1 &= ~ (1 << USART_CR1_TXEIE);
+			regs->CR1 &= ~(1 << USART_CR1_TXEIE);
 			regs->CR1 |= (1 << USART_CR1_TCIE);
 		}
 	}
 
-	if((sr & (1 << USART_SR_TC)) && (regs->CR1 & (1<<USART_CR1_TCIE)))
+	if((regs->SR & (1 << USART_SR_TC)) && (regs->CR1 & (1<<USART_CR1_TCIE)))
 	{
-		regs -> CR1 &= ~(1 << USART_CR1_TXEIE);
+		// Clear bit usart sr tc
+		volatile uint32 tmp;
+		tmp = regs->SR;
+		tmp = regs->DR;
+		(void)tmp;
+//		regs->SR &= ~(1 << USART_SR_TC);
+		regs -> CR1 &= ~(1 << USART_CR1_TCIE);
 		if(ch == UART_CH1 && s_cfg->usart1.cbs.onTxEmptyOrCplt)
 		{
 			s_cfg->usart1.cbs.onTxEmptyOrCplt(ch);
