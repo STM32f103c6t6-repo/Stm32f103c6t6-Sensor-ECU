@@ -42,6 +42,14 @@ extern "C" {
 #define PORT_E_MODE_UNCHANGEABLE		(0x06u)
 
 /* =========================================================
+ *  API prv (using for Dio)
+ * =======================================================*/
+GPIO_TypeDef* prv_GetGpioFromPin(Port_PinType pin, uint8* outPinNum);
+void prv_WriteOdr( GPIO_TypeDef* GPIOx, uint8 pinNum, bool high);
+
+
+
+/* =========================================================
  *  API
  * =======================================================*/
 

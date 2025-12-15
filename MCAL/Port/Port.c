@@ -21,7 +21,7 @@ static Port_StatusType s_portStatus		= PORT_UNINIT;
 static const Port_ConfigType* s_cfg		= NULL_PTR;
 
 /* Decode Pin and pin number 0..15 */
-static inline GPIO_TypeDef* prv_GetGpioFromPin(Port_PinType pin, uint8* outPinNum)
+GPIO_TypeDef* prv_GetGpioFromPin(Port_PinType pin, uint8* outPinNum)
 {
 	uint8 portIndex	= (pin >> 4) & 0x0Fu;
 	uint8 pinNum		= (pin & 0x0Fu);
@@ -113,7 +113,7 @@ static void prv_WritePinCR(GPIO_TypeDef* GPIOx, uint8 pinNum, uint32 modeBits, u
 }
 
 /* Set ODR level for input PU/PD or output init level */
-static inline void prv_WriteOdr( GPIO_TypeDef* GPIOx, uint8 pinNum, bool high)
+void prv_WriteOdr( GPIO_TypeDef* GPIOx, uint8 pinNum, bool high)
 {
 	if(high)
 	{

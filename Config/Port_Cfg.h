@@ -32,11 +32,11 @@ extern "C" {
  * 	- CAN: 		PA12-Tx, PA11-Rx
  * 	- HC-SR04: 	PA1-Trigger(OUT_PP_2M), PA0-Echo(TIM2_CH1)
  * ===================================================================================================================*/
-#define PORT_PIN_UART1_TX		PORTA_PIN(9)
-#define PORT_PIN_UART1_RX		PORTA_PIN(10)
+#define PORT_PIN_UART1_TX			PORTA_PIN(9)
+#define PORT_PIN_UART1_RX			PORTA_PIN(10)
 
-#define PORT_PIN_CAN1_TX		PORTA_PIN(12)
-#define PORT_PIN_CAN1_RX		PORTA_PIN(11)
+#define PORT_PIN_CAN1_TX			PORTA_PIN(12)
+#define PORT_PIN_CAN1_RX			PORTA_PIN(11)
 
 #define PORT_PIN_HCSR04_TRIG		PORTA_PIN(1)
 #define PORT_PIN_HCSR04_ECHO		PORTA_PIN(0)

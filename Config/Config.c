@@ -97,3 +97,5 @@ const Port_ConfigType Port_Config = {
 		.pinCount = (uint32)(sizeof(s_PortPins) / sizeof(Port_PinConfigType)),
 		.afio	= s_AfioCfg
 };
+
+

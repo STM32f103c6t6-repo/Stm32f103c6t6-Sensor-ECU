@@ -2,7 +2,7 @@
  *  File        : Mcu_Types.h
  *  Layer       : MCAL
  *  ECU         : Sensor_ECU (STM32F103C6T6)
- *  Purpose     : Define data structure/enum/struct dùng bởi MCAL/Mcu (clock/reset/NVIC/SysTick/IWDG)
+ *  Purpose     : Define data structure/enum/struct using by MCAL/Mcu (clock/reset/NVIC/SysTick/IWDG)
  *  Notes       : - Contains no register access; just shared type definitions.
  * ===================================================================================================================*/
 #ifndef MCU_MCU_TYPES_H_

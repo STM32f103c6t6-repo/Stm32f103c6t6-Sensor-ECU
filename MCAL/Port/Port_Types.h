@@ -21,6 +21,7 @@ extern "C" {
 #define PORT_TYPES_AR_PATCH_VERSION		(0u)
 
 #include "Std_Types.h"
+#include "stm32f103xx_regs.h"
 
 typedef uint8 Port_PinType;
 
