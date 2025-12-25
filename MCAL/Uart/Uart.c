@@ -181,7 +181,6 @@ static void prv_EnableClock(Uart_ChannelType ch)
 	case UART_CH3: RCC->APB1ENR |= USART3EN; return;
 	default: return;
 	}
-
 }
 
 /* enable/disable NVIC IRQ for channel */

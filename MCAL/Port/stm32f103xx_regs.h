@@ -106,8 +106,12 @@ typedef struct
 #define RCC_APB2ENR_IOPBEN			(1UL << 3)
 #define RCC_APB2ENR_IOPCEN			(1UL << 4)
 #define RCC_APB2ENR_USART1EN		(1UL << 14)
+#define RCC_APB2ENR_TIM1EN			(1UL << 11)
+
 
 #define RCC_APB1ENR_TIM2EN			(1UL << 0)
+#define RCC_APB1ENR_TIM3EN			(1UL << 1)
+#define RCC_APB1ENR_TIM4EN			(1UL << 2)
 #define RCC_APB1ENR_CAN1EN			(1UL << 25)
 
 /* ---- FLASH ACR ---- */
@@ -379,9 +383,17 @@ typedef struct {
 #define CAN1					((CAN_TypeDef*) CAN1_BASE)
 
 #define CAN_MCR_INRQ			(1UL << 0)
-#define CAN_MCR_INAK			(1UL << 0)
-#define CAN_MCR_SILM			(1UL << 31)
-#define CAN_MCR_LBKM			(1UL << 30)
+#define CAN_MSR_INAK			(1UL << 0)
+#define CAN_BTR_SILM			(1UL << 31)
+#define CAN_BTR_LBKM			(1UL << 30)
+
+#define CAN_MCR_SLEEP			(1UL << 1)	// bit CAN sleep
+#define CAN_TSR_TME0			(1UL << 26) // bit mailbox 0
+#define CAN_TI0R_STID_Pos		(21UL)
+#define CAN_TI0R_EXID_Pos		(3UL)
+#define CAN_TSR_RQCP0			(1UL << 0) // bit mailbox 0
+#define CAN_RF0R_FMP0			(1UL << 0)
+#define CAN_RI0R_IDE			(1UL << 2)
 
 /* Tx mailbox TIR: IDE/RTR/ID */
 #define CAN_TI_TXRQ				(1UL << 0)
@@ -391,6 +403,11 @@ typedef struct {
 /* Rx FIFO RIR: IDE/RTR/ID */
 #define CAN_RI_RTR				(1UL << 1)
 #define CAN_RI_IDE				(1UL << 2)
+
+/* position of CAN BTR */
+#define CAN_BTR_SJW_Pos				(24U)
+#define CAN_BTR_TS2_Pos				(20U)
+#define CAN_BTR_TS1_Pos				(16U)
 
 /* =========================================================
  *  Core (SysTick/SCB/NVIC)

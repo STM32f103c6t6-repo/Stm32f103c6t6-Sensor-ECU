@@ -9,6 +9,7 @@
 #include "Port_Cfg.h"
 #include "Uart_Cfg.h"
 #include "Mcu_Cfg.h"
+#include "Gpt_Cfg.h"
 
 // Config for Mcu
 const Mcu_ConfigType Mcu_Config = {
@@ -98,4 +99,18 @@ const Port_ConfigType Port_Config = {
 		.afio	= s_AfioCfg
 };
 
+// Config for Gpt
+static const Gpt_ChannelConfigType s_GptChannelConfigs[] = {
+		{
+				.ChannelId 		= GPT_CHANNEL_ID,
+				.Mode			= GPT_MODE,
+				.TickFrequency	= GPT_TICK_FREQUENCY,
+				.TimerId		= GPT_TIMER_ID,
+				.Prescale		= GPT_TIMER_PRESCALE
+		}
+};
 
+const Gpt_ConFigType Gpt_Config = {
+		.ChannelConfig 	= s_GptChannelConfigs,
+		.ChannelCount	= GPT_CHANNEL_COUNT
+};
