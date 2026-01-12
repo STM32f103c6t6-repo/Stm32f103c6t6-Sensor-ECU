@@ -202,9 +202,9 @@ typedef struct
  *  TIM (TIM1-4; TIM2 dùng cho ICU HC-SR04)
  * =======================================================*/
 #define TIM1_BASE					(APB2PERIPH_BASE +0x2C00UL)
-#define TIM2_BASE					(APB2PERIPH_BASE +0x0000UL)
-#define TIM3_BASE					(APB2PERIPH_BASE +0x0400UL)
-#define TIM4_BASE					(APB2PERIPH_BASE +0x0800UL)
+#define TIM2_BASE					(APB1PERIPH_BASE +0x0000UL)
+#define TIM3_BASE					(APB1PERIPH_BASE +0x0400UL)
+#define TIM4_BASE					(APB1PERIPH_BASE +0x0800UL)
 
 typedef struct
 {
@@ -216,7 +216,7 @@ typedef struct
 	__vo uint32 EGR;		//0x14
 	__vo uint32 CCMR1;	//0x18
 	__vo uint32 CCMR2;	//0x1C
-	__vo uint32 CRER;		//0x20
+	__vo uint32 CCER;		//0x20
 	__vo uint32 CNT;		//0x24
 	__vo uint32 PSC;		//0x28
 	__vo uint32 ARR;		//0x2C
@@ -236,14 +236,22 @@ typedef struct
 #define TIM4				((TIM_TypeDef*) TIM4_BASE)
 
 #define TIM_CR1_CEN			(1UL << 0)
-#define TIM_CR1_CC1IE		(1UL << 1)
+#define TIM_DIER_CC1IE		(1UL << 1)
 #define TIM_CCER_CC1E		(1UL << 0)
-#define TIM_CR1_CC1P		(1UL << 1)
+#define TIM_CCER_CC1P		(1UL << 1)
 
 /* CCMR1 */
 #define TIM_CCMR1_CC1S_Pos		0U	//01:IC1 mapped on TI1
 #define TIM_CCMR1_IC1F_Pos		4U	// input filter
 #define TIM_CCMR1_IC1PCS_Pos	2U
+#define TIM_CCMR1_CC1S			(3UL << 0 )
+#define TIM_CCMR1_CC1S_0		(0U << 0)
+#define TIM_CCMR1_CC1S_1		(1U << 0)
+#define TIM_CCMR1_CC1S_2		(2U << )
+#define TIM_CCMR1_CC1S_3		(3U << 0)
+
+/* SR */
+#define TIM_SR_CC1IF			(1UL << 1)
 
 /* =========================================================
  *  USART (USART1 for log)

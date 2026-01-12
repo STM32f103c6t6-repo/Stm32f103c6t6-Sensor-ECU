@@ -10,6 +10,7 @@
 #include "Uart_Cfg.h"
 #include "Mcu_Cfg.h"
 #include "Gpt_Cfg.h"
+#include "Can_Cfg.h"
 
 // Config for Mcu
 const Mcu_ConfigType Mcu_Config = {
@@ -113,4 +114,23 @@ static const Gpt_ChannelConfigType s_GptChannelConfigs[] = {
 const Gpt_ConFigType Gpt_Config = {
 		.ChannelConfig 	= s_GptChannelConfigs,
 		.ChannelCount	= GPT_CHANNEL_COUNT
+};
+
+//Config for CAN
+static const Can_ControllerConfigType s_CanControllerConfigs[] = {
+		{
+				.ControllerId = CAN_CTL0_ID,
+				.baseAddress = CAN1_BASE,
+				.baudrate = {
+					.precscale 	= CAN_PREC_SCALE_CTL0,
+					.sjw		= CAN_SYNC_SEGMENT_CTL0,
+					.tseg1		= CAN_BIT_SEGMENT_1_CTL0,
+					.tseg2		= CAN_BIT_SEGMENT_2_CTL0
+				}
+		}
+};
+
+const Can_ConfigType Can_Config = {
+		.ControllerConfig	= s_CanControllerConfigs,
+		.numControllers		= CAN_CTL_NUM
 };

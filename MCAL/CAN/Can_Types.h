@@ -2,7 +2,7 @@
  *  File        : Can_Type.h
  *  Layer       : MCAL
  *  ECU         : STM32F103C6T6
- *  Purpose     : Define data structure and macro for CAN driver (General Purpose Timer)
+ *  Purpose     : Define data structure and macro for CAN driver
  *  Notes       :
  * ===================================================================================================================*/
 
@@ -61,7 +61,7 @@ typedef struct
 {
 	uint8 ControllerId;
 	uint32 baseAddress;
-	const Can_BaudrateConfigType* baudrate;
+	const Can_BaudrateConfigType baudrate;
 } Can_ControllerConfigType;
 
 typedef struct
