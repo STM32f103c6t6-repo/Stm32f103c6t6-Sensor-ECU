@@ -17,5 +17,3 @@ const UartIf_ConfigType UartIf_Config ={
 		.ChannelCount = 1u,
 		.DefaultChannelIndex = 0u
 };
-
-

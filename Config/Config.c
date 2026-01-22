@@ -11,6 +11,7 @@
 #include "Mcu_Cfg.h"
 #include "Gpt_Cfg.h"
 #include "Can_Cfg.h"
+#include "Icu_Cfg.h"
 
 // Config for Mcu
 const Mcu_ConfigType Mcu_Config = {
@@ -117,20 +118,37 @@ const Gpt_ConFigType Gpt_Config = {
 };
 
 //Config for CAN
+const const Can_BaudrateConfigType s_CanBaudrate[] = {
+		{
+				.precscale 	= CAN_PREC_SCALE_CTL0,
+				.sjw		= CAN_SYNC_SEGMENT_CTL0,
+				.tseg1		= CAN_BIT_SEGMENT_1_CTL0,
+				.tseg2		= CAN_BIT_SEGMENT_2_CTL0
+		}
+};
+
 static const Can_ControllerConfigType s_CanControllerConfigs[] = {
 		{
 				.ControllerId = CAN_CTL0_ID,
 				.baseAddress = CAN1_BASE,
-				.baudrate = {
-					.precscale 	= CAN_PREC_SCALE_CTL0,
-					.sjw		= CAN_SYNC_SEGMENT_CTL0,
-					.tseg1		= CAN_BIT_SEGMENT_1_CTL0,
-					.tseg2		= CAN_BIT_SEGMENT_2_CTL0
-				}
+				.baudrate = s_CanBaudrate
 		}
 };
 
 const Can_ConfigType Can_Config = {
 		.ControllerConfig	= s_CanControllerConfigs,
 		.numControllers		= CAN_CTL_NUM
+};
+
+// Config for ICU
+static const Icu_ChannelConfigType s_IcuChannelConfigs = {
+		.ChannelID = ICU_CHANNEL_ECHO,
+		.Timer = ICU_TIMER_TIM2,
+		.IcuChannel = ICU_CHANNEL_1,
+		.DefaultEdge = ICU_RISING_EDGE
+};
+
+const Icu_ConfigType Icu_Config = {
+		.channels = s_IcuChannelConfigs,
+		.numsChannel = ICU_CNT_CHANNEL
 };

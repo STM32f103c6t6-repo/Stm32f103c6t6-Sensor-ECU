@@ -39,10 +39,10 @@ void Can_Init(const Can_ConfigType* Config)
 
 	// Config bit timing
 	CAN1->BTR =
-			((Config->ControllerConfig[0].baudrate.sjw - 1U ) << CAN_BTR_SJW_Pos)|
-			((Config->ControllerConfig[0].baudrate.tseg2 - 1U ) << CAN_BTR_TS2_Pos)|
-			((Config->ControllerConfig[0].baudrate.tseg1 - 1U ) << CAN_BTR_TS1_Pos)|
-			((Config->ControllerConfig[0].baudrate.precscale - 1U ));
+			((Config->ControllerConfig[0].baudrate->sjw - 1U ) << CAN_BTR_SJW_Pos)|
+			((Config->ControllerConfig[0].baudrate->tseg2 - 1U ) << CAN_BTR_TS2_Pos)|
+			((Config->ControllerConfig[0].baudrate->tseg1 - 1U ) << CAN_BTR_TS1_Pos)|
+			((Config->ControllerConfig[0].baudrate->precscale - 1U ));
 	/* Leave init mode */
 	CAN1->MCR &= ~CAN_MCR_INRQ;
 	while(CAN1->MSR & CAN_MSR_INAK);

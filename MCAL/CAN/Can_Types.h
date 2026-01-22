@@ -61,7 +61,7 @@ typedef struct
 {
 	uint8 ControllerId;
 	uint32 baseAddress;
-	const Can_BaudrateConfigType baudrate;
+	const Can_BaudrateConfigType* baudrate;
 } Can_ControllerConfigType;
 
 typedef struct
