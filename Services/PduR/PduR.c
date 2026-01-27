@@ -67,7 +67,6 @@ void PduR_CanIfTxConfirmation( PduIdType	TxPduId )
 			break;
 		}
 	}
-
 }
 
 Std_ReturnType PduR_ComTransmit(
@@ -82,6 +81,7 @@ Std_ReturnType PduR_ComTransmit(
 
 	for( i = 0; i < PduR_ConfigPtr->NumTxRoutes; i++)
 	{
+		route = &PduR_ConfigPtr->TxRoutes[i];
 		if((route->SrcModule == PDUR_MODULE_APP) || (route->SrcPduId == TxPduId))
 		{
 			if(route->DstModule == PDUR_MODULE_CANIF)
