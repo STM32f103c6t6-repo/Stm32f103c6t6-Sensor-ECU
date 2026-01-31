@@ -116,6 +116,7 @@ Std_ReturnType Com_SendSignal(
 // COM Ids
 #define COM_SIGNAL_ID_SPEED			((Com_SignalIdType)0U)
 #define COM_SIGNAL_ID_DISTANCE		((Com_SignalIdType)1U)
+#define COM_SIGNAL_ID_OBSTACLE		((Com_SignalIdType)2u)
 
 // IPDU IDs
 #define COM_IPDU_ID_TX_VEHICLE		((Com_IpduIdType)0U)
