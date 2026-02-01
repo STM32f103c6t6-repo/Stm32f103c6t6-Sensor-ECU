@@ -10,7 +10,7 @@
 #include "Can.h"
 
 static const CanIf_ConfigType* CanIf_CfgPtr = NULL_PTR;
-static bool CanIf_Inited = FALSE;
+static boolean CanIf_Inited = FALSE;
 
 void CanIf_Init(const CanIf_ConfigType* ConfigPtr)
 {

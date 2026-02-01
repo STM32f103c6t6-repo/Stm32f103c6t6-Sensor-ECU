@@ -45,7 +45,7 @@ extern "C" {
  *  API prv (using for Dio)
  * =======================================================*/
 GPIO_TypeDef* prv_GetGpioFromPin(Port_PinType pin, uint8* outPinNum);
-void prv_WriteOdr( GPIO_TypeDef* GPIOx, uint8 pinNum, bool high);
+void prv_WriteOdr( GPIO_TypeDef* GPIOx, uint8 pinNum, boolean high);
 
 
 

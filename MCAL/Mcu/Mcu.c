@@ -42,7 +42,7 @@ static uint32 prv_EncodeAdcPrescaler(uint32 div);
 static uint32 prv_EncodePllMul(uint32 mul);
 
 /* Timeout (avoid hang)*/
-static inline bool prv_WaitFlagSet(__vo const uint32* reg, uint32 mask, uint32 loops)
+static inline boolean prv_WaitFlagSet(__vo const uint32* reg, uint32 mask, uint32 loops)
 {
 	while(((*reg) & mask) == 0)
 	{

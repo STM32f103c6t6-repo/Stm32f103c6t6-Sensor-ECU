@@ -28,7 +28,7 @@ typedef enum
 	SENSOR_SUPERVISOR_SENSOR_TIMEOUT,
 	SENSOR_SUPERVISOR_SENSOR_INVALID,
 	SENSOR_SUPERVISOR_SENSOR_ERROR
-} SensorSupervisor_StateType;
+} SensorSupervisor_SensorStatusType;
 
 /* ============================================
  * Obstacle decision state
@@ -37,7 +37,8 @@ typedef enum
 typedef enum
 {
 	SENSOR_SUPERVISOR_NO_OBSTACLE	= 0u,
-	SENSOR_SUPERVISOR_OBSTACLE_DETECTED
+	SENSOR_SUPERVISOR_OBSTACLE_DETECTED,
+	SENSOR_SUPERVISOR_OBSTACLE_UNKNOWN
 } SensorSupervisor_ObstacleDecisionType;
 
 /* ============================================
@@ -49,7 +50,7 @@ typedef enum
 	SENSOR_SUPERVISOR_STATUS_INIT	= 0u,
 	SENSOR_SUPERVISOR_STATUS_RUNNING,
 	SENSOR_SUPERVISOR_STATUS_ERROR
-} SensorSupervisor_SensorStatusType;
+} SensorSupervisor_StateType;
 
 /* ============================================
  * Configuration structure

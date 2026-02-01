@@ -11,7 +11,7 @@
 static const Can_ConfigType* Can_ConfigPtr;
 static Can_ControllerStateType Can_State;
 static Can_PduType Can_TxPduPending;
-static bool Can_TxPending = FALSE;
+static boolean Can_TxPending = FALSE;
 static uint8 Can_RxBuffer[8];
 
 __attribute__((weak)) void Can_TxConfirmation( Can_HwHandleType Hth)

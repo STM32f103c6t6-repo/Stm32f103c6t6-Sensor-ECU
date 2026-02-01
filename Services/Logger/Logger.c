@@ -19,7 +19,7 @@
 /* ==============================
  *       LOCAL STATE
  * ============================== */
-static bool 				s_inited	= FALSE;
+static boolean 				s_inited	= FALSE;
 static Logger_LevelType		s_level		= LOGGER_CFG_DEFAULT_LEVEL;
 #if(LOGGER_CFG_ENABLE_TAG_FILTER == 1)
 static Logger_TagMaskType	s_tagMask	= 0xFFFFFFFFu;
@@ -160,7 +160,7 @@ void Logger_Deinit(void)
 #endif
 }
 
-bool Logger_IsInitialized(void){
+boolean Logger_IsInitialized(void){
 	return s_inited;
 }
 

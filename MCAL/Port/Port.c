@@ -113,7 +113,7 @@ static void prv_WritePinCR(GPIO_TypeDef* GPIOx, uint8 pinNum, uint32 modeBits, u
 }
 
 /* Set ODR level for input PU/PD or output init level */
-void prv_WriteOdr( GPIO_TypeDef* GPIOx, uint8 pinNum, bool high)
+void prv_WriteOdr( GPIO_TypeDef* GPIOx, uint8 pinNum, boolean high)
 {
 	if(high)
 	{

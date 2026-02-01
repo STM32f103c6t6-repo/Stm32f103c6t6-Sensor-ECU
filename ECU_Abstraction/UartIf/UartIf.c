@@ -39,7 +39,7 @@ typedef struct {
 // Config init
 static const UartIf_ConfigType* UartIf_CfgPtr = NULL_PTR;
 // Init state
-static bool UartIf_Inited = FALSE;
+static boolean UartIf_Inited = FALSE;
 
 // Callback for application or logger
 static UartIf_RxIndicationType		UartIf_RxCb_Default = NULL_PTR;
@@ -155,7 +155,7 @@ void UartIf_DeInit(void)
 	UartIf_TxCb_Default = NULL_PTR;
 }
 
-bool UartIf_IsInitialized(void)
+boolean UartIf_IsInitialized(void)
 {
 	return UartIf_Inited;
 }
@@ -287,7 +287,7 @@ Std_ReturnType UartIf_RegisterTxConfirmation(UartIf_TxConfirmationType TxCb)
 /* =====================================================================================
  * 		State Tx
  * ===================================================================================== */
-bool UartIf_IsTxBusy(void)
+boolean UartIf_IsTxBusy(void)
 {
 #if(UARTIF_DEV_ERROR_DETECT == STD_ON)
 	if(UartIf_Inited == FALSE)
@@ -302,7 +302,7 @@ bool UartIf_IsTxBusy(void)
 	}
 #endif
 	const Uart_ChannelType ch = UartIf_CfgPtr->Channels[UartIf_CfgPtr->DefaultChannelIndex].ChannelId;
-	return (bool) UARTIF_MCAL_ISTXBUSY(ch);
+	return (boolean) UARTIF_MCAL_ISTXBUSY(ch);
 }
 
 void UartIf_MainFunction(void)
@@ -369,7 +369,7 @@ Std_ReturnType UartIf_RegisterTxConfirmationCh(Uart_ChannelType Channel,UartIf_T
 	return UartIf_RegisterTxConfirmation(TxCb);
 }
 
-bool UartIf_IsTxBusyCh(Uart_ChannelType Channel)
+boolean UartIf_IsTxBusyCh(Uart_ChannelType Channel)
 {
-	return (bool)UARTIF_MCAL_ISTXBUSY(Channel);
+	return (boolean)UARTIF_MCAL_ISTXBUSY(Channel);
 }

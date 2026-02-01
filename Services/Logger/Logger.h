@@ -127,7 +127,7 @@ typedef struct
 /* Init / free */
 void 		Logger_Init(const Logger_ConfigType* Cfg);
 void		Logger_Deinit(void);
-bool		Logger_IsInitialized(void);
+boolean		Logger_IsInitialized(void);
 
 /* log level and Tag mask */
 Std_ReturnType 		Logger_SetLevel(Logger_LevelType level);
@@ -161,7 +161,7 @@ Std_ReturnType Logger_HexDump(Logger_LevelType level, uint32 tagMask, const uint
 #else // LOGGER_CFG_ENABLE == 0
 static inline void Logger_Init(const Logger_ConfigType* cfg) {(void)Cfg;}
 static inline void Logger_Deinit(void) {}
-static inline bool Logger_IsInitialized(void) {return FALSE;}
+static inline boolean Logger_IsInitialized(void) {return FALSE;}
 static inline Std_ReturnType Logger_SetLevel(Logger_LevelType level)	{(void)level;return E_OK;}
 static inline Logger_LevelType Logger_GetLevel(void) {return (Logger_LevelType)0;}
 static inline Std_ReturnType Logger_Write(const uint8* d, uint16 l) {(void)d;(void)l;return E_OK;}

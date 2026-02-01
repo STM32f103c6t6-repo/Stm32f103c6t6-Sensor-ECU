@@ -107,7 +107,7 @@ static inline uint16 prv_RbFree(const Uart_RingBufferType* rb)
 	return (uint16)((rb->size - 1U) - prv_RbUsed(rb));
 }
 
-static inline bool prv_RbPush(Uart_RingBufferType* rb, uint8 b )
+static inline boolean prv_RbPush(Uart_RingBufferType* rb, uint8 b )
 {
 	uint16 next = rb->head+1U;
 	if(next == rb->size) next = 0U;
@@ -120,7 +120,7 @@ static inline bool prv_RbPush(Uart_RingBufferType* rb, uint8 b )
 	return TRUE;
 }
 
-static inline bool prv_RbPop(Uart_RingBufferType* rb, uint8* out)
+static inline boolean prv_RbPop(Uart_RingBufferType* rb, uint8* out)
 {
 	if( rb->tail == rb->head) return FALSE;
 
@@ -136,7 +136,7 @@ static inline uint32 prv_GetTickMs(void)
 	return s_systickTicks;
 }
 
-static inline bool prv_WaitUntil(bool (*cond)(void*), void* arg, uint32 timeoutMs)
+static inline boolean prv_WaitUntil(boolean (*cond)(void*), void* arg, uint32 timeoutMs)
 {
 	if(timeoutMs == 0)
 	{
@@ -184,7 +184,7 @@ static void prv_EnableClock(Uart_ChannelType ch)
 }
 
 /* enable/disable NVIC IRQ for channel */
-static void prv_EnableIrq(Uart_ChannelType ch, bool enable)
+static void prv_EnableIrq(Uart_ChannelType ch, boolean enable)
 {
 	sint32 irqn = prv_GetIrqNum(ch);
 
@@ -613,7 +613,7 @@ void Uart_IrqHandler(Uart_ChannelType ch)
 #endif
 }
 
-bool Uart_IsTxBusy(Uart_ChannelType ch)
+boolean Uart_IsTxBusy(Uart_ChannelType ch)
 {
 	USART_TypeDef* regs = prv_GetRegs(ch);
 	if(!regs) return FALSE;

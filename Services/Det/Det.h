@@ -67,13 +67,13 @@ void Det_Init(void);
 void Det_ReportError(uint16 ModuleId, uint8 InstanceId, uint8 ApiId, uint8 ErrorId);
 
 // get last log error
-bool Det_GetLastError(Det_ErrorEntryType* out);
+boolean Det_GetLastError(Det_ErrorEntryType* out);
 
 // get count number of history error
 uint16 Det_GetHistoryCount(void);
 
 // Get version
-bool Det_GetHistoryAt(uint16 index, Det_ErrorEntryType* out);
+boolean Det_GetHistoryAt(uint16 index, Det_ErrorEntryType* out);
 // delete history Error
 void Det_ClearHistory(void);
 

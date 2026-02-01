@@ -38,7 +38,7 @@ void Dio_WriteChannel(Dio_ChannelType pinID, Dio_ChannelState Level)
 {
 	uint8 pinNum = 0;
 	Dio_PortType* PORTx =  Dio_PortAddress(pinID, &pinNum);
-	prv_WriteOdr(PORTx,pinNum,(bool)Level);
+	prv_WriteOdr(PORTx,pinNum,(boolean)Level);
 }
 
 /*

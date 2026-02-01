@@ -92,7 +92,7 @@ typedef struct
 {
 	Uart_ChannelType		ChannelId;
 	uint32					Baudrate;
-	bool					UseDma;
+	boolean					UseDma;
 } UartIf_ChannelCfgType;
 
 typedef struct
@@ -108,7 +108,7 @@ typedef struct
 // Init Interface
 void UartIf_Init(const UartIf_ConfigType* CfgPtr);
 void UartIf_DeInit(void); // Clear state to uninit
-bool UartIf_IsInitialized(void); // Check init state
+boolean UartIf_IsInitialized(void); // Check init state
 Std_ReturnType UartIf_Write(const uint8* DataPtr, uint16 Length);
 Std_ReturnType UartIf_WriteChar(uint8 ch); //send a char
 Std_ReturnType UartIf_WriteLine(const char* CStr); // send a string
@@ -116,7 +116,7 @@ Std_ReturnType UartIf_Read(uint8* BufPtr, uint16 BufSize, uint16* OutLen); // Re
 Std_ReturnType UartIf_ReadNonBlocking(uint8* BufPtr, uint16 BufSize, uint16* OutLen); // Read non-blocking
 Std_ReturnType UartIf_RegisterRxIndication(UartIf_RxIndicationType RxCb); //Register Callback Rx
 Std_ReturnType UartIf_RegisterTxConfirmation(UartIf_TxConfirmationType TxCb); //Register Callback Tx
-bool UartIf_IsTxBusy(void); //check Tx busy
+boolean UartIf_IsTxBusy(void); //check Tx busy
 void UartIf_MainFunction(void);
 
 /* =====================================================================================================================
@@ -126,7 +126,7 @@ Std_ReturnType UartIf_WriteCh(Uart_ChannelType Channel, const uint8* DataPtr, ui
 Std_ReturnType UartIf_ReadCh(Uart_ChannelType Channel, uint8* BufPtr, uint16 BufSize, uint16* OutLen);
 Std_ReturnType UartIf_RegisterRxIndicationCh(Uart_ChannelType Channel,UartIf_RxIndicationType RxCb);
 Std_ReturnType UartIf_RegisterTxConfirmationCh(Uart_ChannelType Channel,UartIf_TxConfirmationType TxCb);
-bool UartIf_IsTxBusyCh(Uart_ChannelType Channel);
+boolean UartIf_IsTxBusyCh(Uart_ChannelType Channel);
 
 /* =========================================================
  * 	 Global configuration

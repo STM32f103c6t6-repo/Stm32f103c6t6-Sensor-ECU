@@ -191,7 +191,7 @@ void Uart_IrqHandler(Uart_ChannelType ch);
 /**
  * @brief  Check Tx is Busy now
  */
-bool Uart_IsTxBusy(Uart_ChannelType ch);
+boolean Uart_IsTxBusy(Uart_ChannelType ch);
 
 #ifdef __cplusplus
 }

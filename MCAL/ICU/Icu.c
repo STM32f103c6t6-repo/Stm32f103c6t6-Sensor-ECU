@@ -37,7 +37,7 @@ static TIM_TypeDef* Icu_GetTimer(Icu_ChannelType Channel)
 }
 
 /* enable/disable NVIC IRQ for channel */
-static void prv_EnableIrq(IRQn_Type irqn, bool enable)
+static void prv_EnableIrq(IRQn_Type irqn, boolean enable)
 {
 	irqn = TIM2_IRQn;
 

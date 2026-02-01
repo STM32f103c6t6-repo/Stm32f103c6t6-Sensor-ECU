@@ -24,7 +24,7 @@ uint32 Det_GetMs(void)
 /* ==============================
  *            STATE
  * ============================== */
-static bool detInited = FALSE;
+static boolean detInited = FALSE;
 #if (DET_CFG_ENABLE_HISTORY == 1)
 static Det_ErrorEntryType 	s_hist[DET_CFG_HISTORY_SIZE];
 static uint16				s_histCount = 0u;
@@ -77,7 +77,7 @@ void Det_ReportError(uint16 ModuleId, uint8 InstanceId, uint8 ApiId, uint8 Error
 	(void)ModuleId; (void)InstanceId; (void)ApiId; (void)ErrorId;
 }
 
-bool Det_GetLastError(Det_ErrorEntryType* out)
+boolean Det_GetLastError(Det_ErrorEntryType* out)
 {
 #if (DET_CFG_ENABLE_HISTORY == 1)
 	if((out == NULL)|| (s_histCount == 0u))return FALSE;
@@ -97,7 +97,7 @@ uint16 Det_GetHistoryCount(void)
 #endif
 }
 
-bool Det_GetHistoryAt(uint16 index, Det_ErrorEntryType* out)
+boolean Det_GetHistoryAt(uint16 index, Det_ErrorEntryType* out)
 {
 #if (DET_CFG_ENABLE_HISTORY == 1)
 	if((out == NULL) | (index >= s_histCount)) return FALSE;
