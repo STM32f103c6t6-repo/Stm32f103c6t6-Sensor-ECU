@@ -16,3 +16,6 @@
 !Services/**
 !main.c
 !RTE/
+!RTE/**
+!Application/
+!Application/**
