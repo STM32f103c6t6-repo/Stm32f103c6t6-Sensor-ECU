@@ -61,8 +61,3 @@ void SystemApp_Tick1ms(void)
 {
 	SystemApp_TickMs++;
 }
-
-
-
-
-
