@@ -75,7 +75,7 @@ void SensorIf_Init(void)
 	SensorIf_State	= SENSORIF_STATE_IDLE;
 
 	SensorIf_LastMeasurement.DistanceCm = 0u;
-	SensorIf_LastMeasurement.Status	= SENSORIF_MEASUREMENT_INVALID;
+	SensorIf_LastMeasurement.Status	= SENSORIF_MEAS_INVALID;
 }
 
 // Deinitialize Sensor Interface module

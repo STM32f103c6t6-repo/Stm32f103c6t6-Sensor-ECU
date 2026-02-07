@@ -10,6 +10,7 @@
 #include "Sensor_Cfg.h"
 #include "Sensor_Internal.h"
 #include "Rte.h"
+#include "SensorIf.h"
 
 // Internal Data
 static Sensor_InternalDataType Sensor_InternalData;
@@ -65,7 +66,38 @@ Sensor_StatusType Sensor_GetStatus(void)
 	return Sensor_InternalData.Status;
 }
 
+// Internal Api
+void Sensor_TriggerPulse(void)
+{
+	(void)SensorIf_TriggerMeasurement();
+}
 
+Std_ReturnType Sensor_ReadEcho(Sensor_DistanceCmType* DistanceCm)
+{
+	SensorIf_MeasurementType		Meas;
+	SensorIf_StatusType				IfStatus;
+
+	if(DistanceCm == NULL_PTR) return E_NOT_OK;
+
+	IfStatus = SensorIf_ReadMeasurement(&Meas);
+
+	if(IfStatus != SENSORIF_STATUS_OK) return E_NOT_OK;
+	if(Meas.Status != SENSORIF_MEAS_VALID) return E_NOT_OK;
+
+	*DistanceCm = (Sensor_DistanceCmType)Meas.DistanceCm;
+
+	return E_OK;
+}
+
+Sensor_MeasurementStatusType Sensor_ValidateDistance(Sensor_DistanceCmType DistanceCm)
+{
+	if( (DistanceCm > SENSORIF_MAX_DISTANCE_CM) || (DistanceCm < SENSORIF_MIN_DISTANCE_CM))
+	{
+		return SENSOR_MEAS_INVALID;
+	}
+
+	return SENSOR_MEAS_VALID;
+}
 
 
 
